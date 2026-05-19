@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Finance Dashboard 2026</title>
+<meta name="theme-color" content="#1e293b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Finance">
+<link rel="manifest" href="manifest.json">
+<style>
+  :root {
+    --bg: #0f172a;
+    --surface: #1e293b;
+    --surface2: #2d3748;
+    --border: #334155;
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --blue: #3b82f6;
+    --green: #22c55e;
+    --yellow: #f59e0b;
+    --red: #ef4444;
+    --purple: #a855f7;
+    --teal: #14b8a6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; min-height: 100vh; }
+
+  /* Nav */
+  .nav { background: var(--surface); border-bottom: 1px solid var(--border); display: flex; gap: 0; padding: 0 16px; position: sticky; top: 0; z-index: 100; }
+  .nav-btn { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 13px; font-weight: 500; padding: 14px 16px; border-bottom: 2px solid transparent; transition: all 0.15s; white-space: nowrap; }
+  .nav-btn:hover { color: var(--text); }
+  .nav-btn.active { color: var(--blue); border-bottom-color: var(--blue); }
+
+  /* Tabs */
+  .tab { display: none; padding: 20px 16px; max-width: 960px; margin: 0 auto; }
+  .tab.active { display: block; }
+
+  /* Cards */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+  .card-title { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 12px; font-weight: 600; }
+
+  /* Grid */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  @media (max-width: 640px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+  /* Stat */
+  .stat-val { font-size: 28px; font-weight: 700; line-height: 1; }
+  .stat-label { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .stat-sub { font-size: 12px; color: var(--muted); margin-top: 6px; }
+
+  /* Progress bar */
+  .progress-wrap { margin-top: 8px; }
+  .progress-track { background: var(--surface2); border-radius: 99px; height: 8px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 99px; transition: width 0.4s ease; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+  /* Month pills */
+  .pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+  .pill { background: var(--surface2); border: 1px solid var(--border); border-radius: 99px; color: var(--muted); cursor: pointer; font-size: 12px; font-weight: 500; padding: 5px 12px; transition: all 0.15s; }
+  .pill:hover { border-color: var(--blue); color: var(--text); }
+  .pill.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .pill.done { background: #16a34a22; border-color: var(--green); color: var(--green); }
+
+  /* Table */
+  table { border-collapse: collapse; width: 100%; }
+  th { background: var(--surface2); color: var(--muted); font-size: 11px; font-weight: 600; padding: 8px 10px; text-align: left; text-transform: uppercase; letter-spacing: 0.04em; }
+  td { border-bottom: 1px solid var(--border); padding: 8px 10px; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--surface2); }
+
+  /* Variable tracker */
+  .var-row { align-items: center; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 140px 1fr 90px 70px; gap: 8px; padding: 8px 0; }
+  .var-row:last-child { border-bottom: none; }
+  .var-name { font-weight: 500; font-size: 13px; }
+  .var-card { color: var(--muted); font-size: 11px; }
+  input[type=number] { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 13px; padding: 5px 8px; width: 80px; outline: none; }
+  input[type=number]:focus { border-color: var(--blue); }
+  .var-cap { color: var(--muted); font-size: 12px; text-align: right; }
+
+  /* Color states */
+  .green { color: var(--green); }
+  .yellow { color: var(--yellow); }
+  .red { color: var(--red); }
+  .muted { color: var(--muted); }
+  .blue { color: var(--blue); }
+  .purple { color: var(--purple); }
+  .bg-green { background: #16a34a22; }
+  .bg-yellow { background: #92400e22; }
+  .bg-red { background: #7f1d1d22; }
+
+  /* Checklist */
+  .check-item { align-items: flex-start; border-bottom: 1px solid var(--border); display: flex; gap: 10px; padding: 10px 0; }
+  .check-item:last-child { border-bottom: none; }
+  .check-item input[type=checkbox] { accent-color: var(--green); cursor: pointer; flex-shrink: 0; height: 16px; margin-top: 2px; width: 16px; }
+  .check-item label { cursor: pointer; flex: 1; line-height: 1.5; }
+  .check-item.checked label { color: var(--muted); text-decoration: line-through; }
+  .check-tag { border-radius: 4px; font-size: 10px; font-weight: 600; padding: 2px 6px; text-transform: uppercase; white-space: nowrap; }
+  .tag-urgent { background: #7f1d1d44; color: var(--red); }
+  .tag-soon { background: #78350f44; color: var(--yellow); }
+  .tag-monthly { background: #1e3a5f44; color: var(--blue); }
+
+  /* Search */
+  .search-wrap { margin-bottom: 12px; }
+  .search-wrap input[type=text] { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 13px; outline: none; padding: 8px 12px; width: 100%; }
+  .search-wrap input[type=text]:focus { border-color: var(--blue); }
+
+  /* Timeline */
+  .timeline { display: flex; flex-direction: column; gap: 0; }
+  .tl-row { align-items: flex-start; display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .tl-row:last-child { border-bottom: none; }
+  .tl-dot { background: var(--blue); border-radius: 50%; flex-shrink: 0; height: 10px; margin-top: 5px; width: 10px; }
+  .tl-dot.green { background: var(--green); }
+  .tl-dot.red { background: var(--red); }
+  .tl-dot.yellow { background: var(--yellow); }
+  .tl-dot.purple { background: var(--purple); }
+  .tl-month { color: var(--muted); font-size: 11px; font-weight: 600; min-width: 70px; text-transform: uppercase; }
+  .tl-content { flex: 1; }
+
+  /* Fee row */
+  .fee-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .fee-row:last-child { border-bottom: none; }
+
+  /* Badges */
+  .badge { border-radius: 4px; font-size: 10px; font-weight: 600; padding: 2px 7px; text-transform: uppercase; }
+  .badge-green { background: #16a34a22; color: var(--green); }
+  .badge-red { background: #7f1d1d44; color: var(--red); }
+  .badge-yellow { background: #78350f44; color: var(--yellow); }
+  .badge-blue { background: #1e3a5f44; color: var(--blue); }
+  .badge-muted { background: var(--surface2); color: var(--muted); }
+
+  /* Bilt input */
+  .big-input { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 20px; font-weight: 700; outline: none; padding: 10px 14px; width: 160px; }
+  .big-input:focus { border-color: var(--blue); }
+
+  /* Section header */
+  .section-h { color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: 0.05em; margin: 20px 0 8px; text-transform: uppercase; }
+  .section-h:first-child { margin-top: 0; }
+
+  /* Info box */
+  .info-box { background: #1e3a5f33; border: 1px solid #3b82f622; border-radius: 8px; font-size: 13px; line-height: 1.6; padding: 12px 14px; margin-bottom: 12px; }
+  .warn-box { background: #78350f22; border: 1px solid #f59e0b33; border-radius: 8px; font-size: 13px; line-height: 1.6; padding: 12px 14px; margin-bottom: 12px; }
+  .success-box { background: #16a34a22; border: 1px solid #22c55e33; border-radius: 8px; font-size: 13px; line-height: 1.6; padding: 12px 14px; margin-bottom: 12px; }
+
+  /* Reset button */
+  .btn { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; color: var(--muted); cursor: pointer; font-size: 12px; padding: 6px 12px; transition: all 0.15s; }
+  .btn:hover { border-color: var(--blue); color: var(--blue); }
+  .btn-red:hover { border-color: var(--red); color: var(--red); }
+
+  /* Divider */
+  hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
+
+  .inline-flex { display: flex; align-items: center; gap: 8px; }
+  .mt8 { margin-top: 8px; }
+  .mt4 { margin-top: 4px; }
+  .mb8 { margin-bottom: 8px; }
+  .bold { font-weight: 700; }
+  .small { font-size: 12px; }
+
+  /* Customize tab */
+  .cust-row { align-items: center; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 1fr 110px 90px 50px; gap: 8px; padding: 10px 0; }
+  .cust-row:last-child { border-bottom: none; }
+  .del-btn { background: none; border: 1px solid transparent; border-radius: 4px; color: var(--muted); cursor: pointer; font-size: 14px; padding: 2px 6px; }
+  .del-btn:hover { background: #ef444422; border-color: var(--red); color: var(--red); }
+  .restore-link { color: var(--blue); cursor: pointer; font-size: 12px; text-decoration: underline; }
+  .impact-pos { color: var(--green); font-size: 11px; font-weight: 600; }
+  .impact-neg { color: var(--red); font-size: 11px; font-weight: 600; }
+  .fix-row { align-items: center; border-bottom: 1px solid var(--border); display: flex; gap: 12px; padding: 10px 0; }
+  .fix-row:last-child { border-bottom: none; }
+  .fix-row.disabled { opacity: 0.45; }
+  .fix-row input[type=checkbox] { accent-color: var(--green); cursor: pointer; flex-shrink: 0; height: 16px; width: 16px; }
+
+  /* ─── Mobile (phones ≤ 640px) ───────────────────────────── */
+  @media (max-width: 640px) {
+    /* Nav: horizontal scroll, no visible scrollbar */
+    .nav { overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 0 4px; scrollbar-width: none; }
+    .nav::-webkit-scrollbar { display: none; }
+    .nav-btn { font-size: 12px; padding: 12px 10px; flex-shrink: 0; }
+
+    /* Tab and card padding */
+    .tab { padding: 12px 10px; }
+    .card { padding: 12px; }
+
+    /* Tables: individually scrollable (display:block preserves internal table formatting) */
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+    /* Prevent iOS auto-zoom on input focus — font-size must be ≥ 16px */
+    input[type=number], input[type=text] { font-size: 16px !important; }
+    .big-input { font-size: 16px !important; width: 130px; }
+    input[type=number] { width: 68px; }
+
+    /* Stat values: slightly smaller so 5-digit numbers don't overflow */
+    .stat-val { font-size: 22px; }
+
+    /* Timeline: tighter month label */
+    .tl-month { min-width: 50px; font-size: 10px; }
+
+    /* var-row: move progress bar to its own row under the name */
+    .var-row {
+      grid-template-columns: 1fr auto auto;
+      grid-template-rows: auto auto;
+      row-gap: 4px;
+    }
+    .var-row > div:first-child  { grid-column: 1; grid-row: 1; }
+    .var-row > div:nth-child(2) { grid-column: 1 / -1; grid-row: 2; }
+    .var-row input[type=number] { grid-column: 2; grid-row: 1; width: 62px !important; }
+    .var-cap                    { grid-column: 3; grid-row: 1; font-size: 11px; }
+
+    /* cust-row: move diff badge below name, keep input right-aligned */
+    .cust-row {
+      grid-template-columns: 1fr auto auto;
+      grid-template-rows: auto auto;
+      row-gap: 4px;
+    }
+    .cust-row > div:first-child  { grid-column: 1; grid-row: 1; }
+    .cust-row > div:nth-child(2) { grid-column: 1; grid-row: 2; }
+    .cust-row input[type=number] { grid-column: 2; grid-row: 1 / 3; align-self: center; width: 64px !important; }
+    .cust-row > span:last-child  { grid-column: 3; grid-row: 1 / 3; align-self: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <button class="nav-btn active" onclick="showTab('dashboard')">Dashboard</button>
+  <button class="nav-btn" onclick="showTab('budget')">Monthly Budget</button>
+  <button class="nav-btn" onclick="showTab('cards')">Card Strategy</button>
+  <button class="nav-btn" onclick="showTab('actions')">Action Items</button>
+  <button class="nav-btn" onclick="showTab('fees')">Annual Fees</button>
+  <button class="nav-btn" onclick="showTab('grocery')">Grocery Plan</button>
+  <button class="nav-btn" onclick="showTab('customize')">⚙ Customize</button>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════
+     TAB 1: DASHBOARD
+══════════════════════════════════════════════════════════════ -->
+<div id="tab-dashboard" class="tab active">
+
+  <div class="card">
+    <div class="card-title">Bilt Balance — Update Today's Balance</div>
+    <div class="inline-flex">
+      <span style="font-size:20px;font-weight:700;color:var(--muted)">$</span>
+      <input class="big-input" id="bilt-input" type="number" min="0" max="9999" step="1" placeholder="5154" oninput="saveBilt()">
+      <button class="btn" onclick="document.getElementById('bilt-input').value='';saveBilt()">Clear</button>
+    </div>
+    <div id="bilt-progress-wrap" class="progress-wrap mt8" style="display:none">
+      <div class="progress-track"><div class="progress-fill" id="bilt-fill" style="background:var(--red)"></div></div>
+      <div class="progress-label"><span id="bilt-pct-label"></span><span id="bilt-remaining-label"></span></div>
+    </div>
+    <p id="bilt-status" class="mt8" style="font-size:13px;color:var(--muted)"></p>
+  </div>
+
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-title">Monthly Income</div>
+      <div class="stat-val green">$8,300</div>
+      <div class="stat-label">Take-home / month</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Fixed Expenses</div>
+      <div class="stat-val" style="color:var(--yellow)">$5,037</div>
+      <div class="stat-label">Jun–Jul · $5,159 from Aug</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Variable Cap</div>
+      <div class="stat-val" style="color:var(--yellow)" id="var-cap-stat">$1,435</div>
+      <div class="stat-label">10 categories · see budget tab</div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Paydown Surplus</div>
+      <div class="stat-val blue">$1,706</div>
+      <div class="stat-label">Available for Bilt / savings each month (from Aug)</div>
+      <div class="stat-sub mt8" style="line-height:1.6">
+        Jun: <span class="green bold">$1,428</span> → Bilt<br>
+        Jul: <span class="green bold">$1,628</span> → Bilt<br>
+        Aug–Sep: <span class="green bold">$1,706 + $226</span> → Bilt (<span class="green">PAID OFF</span>)
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Financial Milestones</div>
+      <div class="timeline">
+        <div class="tl-row">
+          <div class="tl-dot red"></div>
+          <div><div class="tl-month">Jun 2026</div><div>Bilt: $5,154 → $3,769 · Dental · 10% APR</div></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-dot yellow"></div>
+          <div><div class="tl-month">Jul 2026</div><div>Bilt: $3,769 → $2,172 · Last Affirm B</div></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-dot yellow"></div>
+          <div><div class="tl-month">Aug 2026</div><div>Bilt: $2,172 → $484 · Plan B ends, Remitly starts</div></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-dot green"></div>
+          <div><div class="tl-month">Sep 2026</div><div class="green bold">Bilt $0 ✓ · $1,218 seeds emergency fund</div></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-dot blue"></div>
+          <div><div class="tl-month">Oct–Nov</div><div>Emergency fund: $2,842 → $4,548</div></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-dot green"></div>
+          <div><div class="tl-month">Dec 2026</div><div class="green bold">Emergency fund $5,000 ✓ · Roth IRA starts ($1,254)</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Bilt Status Strategy — Target Silver, Not Gold</div>
+    <div class="info-box">
+      <strong>Gold requires 125,000+ points/year</strong> — that means spending $25,000+ on non-rent categories at 1x, which would mean routing dining, groceries, and gas to Bilt instead of cards that earn 3x UR or 3x TYP. The opportunity cost is too high.
+    </div>
+    <div class="success-box">
+      <strong>Silver is achievable at zero opportunity cost.</strong> Your rent earns ~40,200 Bilt/year. Route dining + Uber Eats to Bilt at 3x (same rate as Freedom Flex) and you'll hit ~55,000+ Bilt/year. Silver unlocks better transfer ratios and earns the same amount as Freedom Flex for those categories — so you lose nothing by routing them to Bilt.
+    </div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:4px">
+      <div><div class="small muted">Silver threshold</div><div class="bold">50,000 pts/yr</div></div>
+      <div><div class="small muted">Gold threshold</div><div class="bold muted">125,000 pts/yr ← skip</div></div>
+      <div><div class="small muted">Your est. annual Bilt</div><div class="bold green">~55,000+ pts</div></div>
+      <div><div class="small muted">Status target</div><div class="bold blue">Silver ✓</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">5 Rules That Determine If This Works</div>
+    <table>
+      <tr>
+        <td style="width:28px;font-size:18px">🍽️</td>
+        <td><strong>Dining out: $250/month hard cap</strong><br><span class="muted small">You averaged $571/month in Mar–Apr. This single category is the difference between paying Bilt in August vs. November.</span></td>
+      </tr>
+      <tr>
+        <td style="font-size:18px">📦</td>
+        <td><strong>Amazon: $150/month hard cap</strong><br><span class="muted small">You spent $534 in April. 48-hour wait on any purchase over $30.</span></td>
+      </tr>
+      <tr>
+        <td style="font-size:18px">🛵</td>
+        <td><strong>Uber Eats: once per week maximum</strong><br><span class="muted small">8 orders in 17 days in May. One order/week = $160/month. That's the budget.</span></td>
+      </tr>
+      <tr>
+        <td style="font-size:18px">🛒</td>
+        <td><strong>Groceries: plan before you shop</strong><br><span class="muted small">April had 8+ Safeway trips and a $619 bill. One planned weekly shop = $350/month.</span></td>
+      </tr>
+      <tr>
+        <td style="font-size:18px">💸</td>
+        <td><strong>Send surplus to Bilt on the 15th and last day</strong><br><span class="muted small">If you have $900 sitting in checking on the 15th, send it to Bilt that day. Don't let money idle.</span></td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     TAB 2: MONTHLY BUDGET
+══════════════════════════════════════════════════════════════ -->
+<div id="tab-budget" class="tab">
+
+  <div class="pills" id="month-pills"></div>
+  <div id="month-body"></div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     TAB 3: CARD STRATEGY
+══════════════════════════════════════════════════════════════ -->
+<div id="tab-cards" class="tab">
+
+  <div class="card">
+    <div class="card-title">Quick Wallet Reference</div>
+    <div style="background:var(--surface2);border-radius:8px;padding:14px;font-family:monospace;font-size:12px;line-height:2">
+      RENT &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ <strong>Bilt</strong> <span class="muted">(1x Bilt)</span><br>
+      DINING + DELIVERY → <strong>Chase Freedom Flex</strong> <span class="muted">(3x UR)</span><br>
+      GROCERIES &nbsp;&nbsp;&nbsp;&nbsp;→ <strong>Citi Strata Premier</strong> <span class="muted">(3x TYP)</span><br>
+      AMAZON &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ <strong>Amazon Prime Visa</strong> <span class="muted">(5% cash)</span><br>
+      INTERNET &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ <strong>Ink Business Preferred</strong> <span class="muted">(3x UR)</span><br>
+      GAS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ <strong>WF Autograph</strong> <span class="muted">(3x WF)</span><br>
+      STREAMING/APPLE → <strong>Apple Card</strong> <span class="muted">(3% Daily Cash)</span><br>
+      CVS / PHARMACY&nbsp;→ <strong>Freedom Flex</strong> <span class="muted">(3x UR — permanent)</span><br>
+      PARKING / LYFT&nbsp;→ <strong>Amex Green</strong> <span class="muted">(3x MR)</span><br>
+      EQUINOX / GYM &nbsp;→ <strong>Amex Blue Biz Plus</strong> <span class="muted">(2x MR flat-rate)</span><br>
+      GEICO/INSURANCE → <strong>Amex Blue Biz Plus</strong> <span class="muted">(2x MR flat-rate)</span><br>
+      UNITED FLIGHTS &nbsp;→ <strong>United Business</strong> <span class="muted">(8x United)</span><br>
+      OTHER FLIGHTS &nbsp;→ <strong>Sapphire Preferred</strong> <span class="muted">(5x UR via portal)</span><br>
+      HOTELS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ <strong>Venture X</strong> <span class="muted">(10x via C1 portal)</span><br>
+      EVERYTHING ELSE → <strong>Amex Blue Biz Plus</strong> <span class="muted">(2x MR)</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Search by Category or Card</div>
+    <div class="search-wrap"><input type="text" id="card-search" placeholder="Type a category, card name, or points type…" oninput="filterCards()"></div>
+    <table id="card-table">
+      <thead>
+        <tr><th>Category</th><th>Your Spend</th><th>Best Card</th><th>Rate</th><th>Notes</th><th></th></tr>
+      </thead>
+      <tbody id="card-tbody"></tbody>
+    </table>
+    <div id="card-restore-wrap" style="display:none;margin-top:10px">
+      <span class="muted small">Some rows are hidden. </span>
+      <span class="restore-link" onclick="restoreCards()">Show all hidden rows</span>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Your Point Ecosystems</div>
+      <table>
+        <tr><th>Currency</th><th>Your Cards</th></tr>
+        <tr><td><span class="blue bold">Chase UR</span></td><td>Sapphire Preferred, Freedom Flex, Ink Preferred, Ink Unlimited</td></tr>
+        <tr><td><span style="color:#f97316" class="bold">Amex MR</span></td><td>Amex Green, Blue Business Plus</td></tr>
+        <tr><td><span class="green bold">Bilt</span></td><td>Bilt Mastercard</td></tr>
+        <tr><td><span style="color:#a855f7" class="bold">Citi TYP</span></td><td>Citi Strata Premier</td></tr>
+        <tr><td><span style="color:#64748b" class="bold">C1 Miles</span></td><td>Venture X</td></tr>
+        <tr><td style="color:#f1f5f9" class="bold">Apple Daily Cash</td><td>Apple Card</td></tr>
+        <tr><td class="muted">Cash only</td><td class="muted">WF Autograph, Amazon Prime Visa, United cards</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title">Freedom Flex Quarterly 5x Calendar</div>
+      <div class="warn-box small">Activate each quarter at <strong>chase.com/freedom</strong> — up to $1,500 at 5x UR per quarter.</div>
+      <table>
+        <tr><th>Quarter</th><th>5x Category</th><th>Status</th></tr>
+        <tr><td>Q1 Jan–Mar</td><td>Dining, Norwegian Cruise</td><td><span class="badge badge-muted">Done</span></td></tr>
+        <tr><td><strong>Q2 Apr–Jun</strong></td><td><strong>Chase Travel, Amazon</strong></td><td><span class="badge badge-yellow">Activate!</span></td></tr>
+        <tr><td>Q3 Jul–Sep</td><td>TBD (gas/grocery/streaming)</td><td><span class="badge badge-blue">Watch</span></td></tr>
+        <tr><td>Q4 Oct–Dec</td><td>TBD (PayPal/dept stores)</td><td><span class="badge badge-blue">Watch</span></td></tr>
+      </table>
+      <div class="info-box mt8 small">
+        <strong>Q2 Amazon choice:</strong> Freedom Flex earns 5x UR (worth ~$75 at 1.5¢) vs. Amazon Prime Visa's 5% cash ($75). Use Freedom Flex if building UR for Hyatt/United travel.
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Annual Points Estimate</div>
+    <table>
+      <thead><tr><th>Category</th><th>Monthly</th><th>Card</th><th>Rate</th><th>Annual Points</th></tr></thead>
+      <tbody>
+        <tr><td>Rent</td><td>$3,347</td><td>Bilt</td><td>1x</td><td>~40,200 Bilt</td></tr>
+        <tr><td>Dining + delivery</td><td>$410</td><td>Freedom Flex</td><td>3x UR</td><td>~14,760 UR</td></tr>
+        <tr><td>Groceries</td><td>$350</td><td>Citi Strata</td><td>3x TYP</td><td>~12,600 TYP</td></tr>
+        <tr><td>Amazon</td><td>$150</td><td>Amazon Prime Visa</td><td>5%</td><td>$90/yr cash</td></tr>
+        <tr><td>Internet</td><td>$41</td><td>Ink Preferred</td><td>3x UR</td><td>~1,480 UR</td></tr>
+        <tr><td>Gas</td><td>$150</td><td>WF Autograph</td><td>3x WF</td><td>~5,400 WF</td></tr>
+        <tr><td>Apple/streaming</td><td>$31</td><td>Apple Card</td><td>3% cash</td><td>~$11.16/yr cash</td></tr>
+        <tr><td>CVS/pharmacy</td><td>$75</td><td>Freedom Flex</td><td>3x UR</td><td>~2,700 UR</td></tr>
+        <tr><td>Parking/transit</td><td>$90</td><td>Amex Green</td><td>3x MR</td><td>~3,240 MR</td></tr>
+        <tr><td>Equinox</td><td>$237</td><td>Blue Biz Plus</td><td>2x MR</td><td>~5,688 MR</td></tr>
+        <tr><td>GEICO</td><td>$161</td><td>Blue Biz Plus</td><td>2x MR</td><td>~3,864 MR</td></tr>
+        <tr><td style="font-weight:700" colspan="4">Annual Totals</td><td style="font-weight:700">~40k Bilt / 19k UR / 12.6k TYP / 11.4k MR / 7.4k WF</td></tr>
+      </tbody>
+    </table>
+    <div class="muted small mt8">Estimated annual value at ~1.5–2¢/point: <strong class="text">$1,350–1,800/year in travel rewards</strong></div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     TAB 4: ACTION ITEMS
+══════════════════════════════════════════════════════════════ -->
+<div id="tab-actions" class="tab">
+
+  <div style="display:flex;justify-content:flex-end;margin-bottom:12px;gap:8px">
+    <button class="btn btn-red" onclick="resetChecks()">Reset all checkboxes</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔴 Urgent — Do This Now</div>
+    <div id="checks-urgent"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🟡 Before Next Annual Fee</div>
+    <div id="checks-soon"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔵 Monthly Recurring</div>
+    <div id="checks-monthly"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">2027–2028 Planning</div>
+    <div id="checks-future"></div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     TAB 5: ANNUAL FEES
+══════════════════════════════════════════════════════════════ -->
+<div id="tab-fees" class="tab">
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">What Fees Actually Cost You (Net)</div>
+      <table>
+        <thead><tr><th>Card</th><th>Fee</th><th>Credits</th><th>Net Cost</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Bilt Mastercard</td><td>$495</td>
+            <td>Rent pts ~$600–800/yr</td>
+            <td><span class="green bold">~$0</span></td>
+          </tr>
+          <tr>
+            <td>Sapphire Preferred</td><td>$95</td>
+            <td>$50 hotel credit</td>
+            <td><span class="yellow">~$45</span></td>
+          </tr>
+          <tr>
+            <td>Amex Green</td><td>$150</td>
+            <td>$209 CLEAR credit</td>
+            <td><span class="green bold">−$59 (pays you)</span></td>
+          </tr>
+          <tr>
+            <td>Venture X (if kept)</td><td>$395</td>
+            <td>$300 travel + 10k miles + PreCheck</td>
+            <td><span class="green bold">−$125 to −$210</span></td>
+          </tr>
+          <tr>
+            <td>United Business 9642</td><td>$150</td>
+            <td>United perks</td>
+            <td><span class="red">$150 (close Apr 2027)</span></td>
+          </tr>
+          <tr>
+            <td>Ink Business Preferred 2840</td><td>$95</td>
+            <td>Dormant — zero</td>
+            <td><span class="red">$95 (close now)</span></td>
+          </tr>
+          <tr>
+            <td>Apple Card</td><td>$0</td><td>3% Apple/Uber + 2% Apple Pay</td><td><span class="green bold">$0</span></td>
+          </tr>
+          <tr>
+            <td>Gateway, Ink ×2 free cards</td><td>$0</td><td>—</td><td class="muted">$0</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700">Total</td><td style="font-weight:700">$1,135</td><td></td>
+            <td><span class="green bold">~$0 net</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title">⚠️ Venture X — Should You Cancel?</div>
+      <div class="success-box small">
+        The Venture X is <strong>fee-positive</strong> — returns more than it costs if you use the $300 travel credit.
+      </div>
+      <table>
+        <tr><td>$300 annual travel credit (C1 portal)</td><td class="green bold">$300</td></tr>
+        <tr><td>10,000 anniversary bonus miles</td><td class="green bold">~$100–185</td></tr>
+        <tr><td>Global Entry / TSA PreCheck credit</td><td class="green bold">$120 every 4 yrs</td></tr>
+        <tr><td><strong>Total return</strong></td><td class="green bold">~$520–605/yr</td></tr>
+        <tr><td>Annual fee</td><td class="red">$395</td></tr>
+        <tr><td><strong>Net benefit</strong></td><td class="green bold">+$125–210/yr</td></tr>
+      </table>
+      <div class="warn-box small mt8">
+        <strong>Only cancel if you never use the $300 travel credit.</strong> Amex Green covers CLEAR ($209). Venture X covers TSA PreCheck/Global Entry ($120). Together both programs are covered at zero net cost.
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Fee Calendar — When Fees Post</div>
+    <div class="timeline">
+      <div class="tl-row">
+        <div class="tl-dot red"></div>
+        <div class="tl-content">
+          <span class="tl-month">Now</span>
+          <strong>Close Ink Business Preferred 2840</strong> — dormant, saves $95 from Feb 2027
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-dot yellow"></div>
+        <div class="tl-content">
+          <span class="tl-month">Feb 2027</span>
+          <span class="muted">Ink Business Preferred — $95 fee posts</span> <span class="badge badge-green">Closed already</span>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-dot blue"></div>
+        <div class="tl-content">
+          <span class="tl-month">Mar 4 2027</span>
+          <strong>Bilt $495 annual fee</strong> — set aside $82/month Oct–Feb to cover this
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-dot red"></div>
+        <div class="tl-content">
+          <span class="tl-month">Apr 2027</span>
+          <strong>Close United Business 9642 before this date</strong> — saves $150/yr. United Gateway handles all United needs free.
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-dot blue"></div>
+        <div class="tl-content">
+          <span class="tl-month">May 2027</span>
+          <span>Sapphire Preferred $95 — keep, $50 hotel credit reduces to $45 net</span>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-dot purple"></div>
+        <div class="tl-content">
+          <span class="tl-month">Ongoing</span>
+          <span>Venture X $395 — keep if using $300 travel credit, otherwise cancel 60+ days before next fee</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Bilt Annual Fee Reserve — $82/month starting October</div>
+    <div class="info-box small">
+      Bilt's $495 annual fee posts <strong>March 4, 2027</strong>. Set aside $82/month from October 2026 → February 2027 (5 months) so you have $410–492 ready. Pay from checking surplus — do not charge it to the Bilt card.
+    </div>
+    <table>
+      <thead><tr><th>Month</th><th>Set Aside</th><th>Running Total</th></tr></thead>
+      <tbody>
+        <tr><td>October 2026</td><td>$82</td><td>$82</td></tr>
+        <tr><td>November 2026</td><td>$82</td><td>$164</td></tr>
+        <tr><td>December 2026</td><td>$82</td><td>$246</td></tr>
+        <tr><td>January 2027</td><td>$82</td><td>$328</td></tr>
+        <tr><td>February 2027</td><td>$82</td><td>$410</td></tr>
+        <tr><td>March 4, 2027</td><td colspan="2" class="green bold">Bilt fee posts — pay $495 from reserve + $85 surplus</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     TAB 6: GROCERY PLAN
+══════════════════════════════════════════════════════════════ -->
+<div id="tab-grocery" class="tab">
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Daily Protein — 140g Goal</div>
+      <table>
+        <thead><tr><th>Source</th><th>Protein</th><th>Where</th></tr></thead>
+        <tbody>
+          <tr><td>3 organic eggs (breakfast)</td><td class="green bold">18g</td><td class="muted">Costco</td></tr>
+          <tr><td>Barebell protein bar</td><td class="green bold">20g</td><td class="muted">Safeway</td></tr>
+          <tr><td>Fairlife shake</td><td class="green bold">42g</td><td class="muted">Amazon ✓</td></tr>
+          <tr><td>Oikos Triple Zero (5.3oz)</td><td class="green bold">15g</td><td class="muted">Costco</td></tr>
+          <tr style="border-top:2px solid var(--border)"><td><strong>Fixed daily subtotal</strong></td><td class="blue bold">95g</td><td></td></tr>
+          <tr><td>Lunch: 4oz raw beef or turkey</td><td class="green bold">~22g</td><td class="muted">Costco</td></tr>
+          <tr><td>Dinner: 5oz raw chicken thigh</td><td class="green bold">~23g</td><td class="muted">Costco</td></tr>
+          <tr style="border-top:2px solid var(--border)"><td><strong>Daily total</strong></td><td class="green bold" style="font-size:16px">~140g ✓</td><td></td></tr>
+        </tbody>
+      </table>
+      <div class="info-box small mt8">
+        Lunch alternates: 96% lean ground beef (days 1–15) ↔ 93% ground turkey (days 16–30). Cook both with onion, garlic, ginger, turmeric, coriander, cumin, chili.
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Monthly Budget vs $350 Target</div>
+      <div class="fee-row"><span>Costco (one trip/month, in-store)</span><span class="bold">~$186</span></div>
+      <div class="fee-row"><span>Safeway (ongoing weekly)</span><span class="bold">~$138</span></div>
+      <div class="fee-row" style="border-top:2px solid var(--border);padding-top:10px;margin-top:4px">
+        <span class="bold">Total grocery (in-store)</span><span class="green bold" style="font-size:18px">~$347</span>
+      </div>
+      <div class="fee-row"><span class="muted">Budget cap</span><span class="muted">$350</span></div>
+      <div class="success-box small mt8">
+        Under budget by ~$3. Fairlife protein shakes (42g) are on Amazon — excluded from grocery budget.
+      </div>
+      <div class="warn-box small mt8">
+        Amazon variable cap ($150) is nearly consumed: longevity mix $98 + toothpaste $18 avg + collagen $23 avg + creatine $7 avg = <strong>$146/month</strong>. Almost no room for discretionary Amazon purchases.
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="border-color:#f59e0b44">
+    <div class="card-title" style="color:var(--yellow)">Same-Day Costco Delivery — Cost Analysis</div>
+    <div class="warn-box small" style="margin-bottom:14px"><strong>Bottom line: Full monthly haul via delivery = $402 — $52 over your $350 cap.</strong> Delivery works for a reduced "essentials only" order. See options below.</div>
+
+    <div class="grid-2" style="margin-bottom:14px">
+      <div>
+        <div class="muted small" style="margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;font-weight:600">Full Cart In-Store</div>
+        <div class="fee-row"><span>Items</span><span>$186</span></div>
+        <div class="fee-row"><span>Delivery fee</span><span class="green">$0</span></div>
+        <div class="fee-row"><span>Service fee</span><span class="green">$0</span></div>
+        <div class="fee-row"><span>Tip</span><span class="green">$0</span></div>
+        <div class="fee-row" style="border-top:1px solid var(--border);padding-top:8px;margin-top:4px"><span class="bold">Total</span><span class="green bold">$186</span></div>
+      </div>
+      <div>
+        <div class="muted small" style="margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;font-weight:600">Full Cart via sameday.costco.com</div>
+        <div class="fee-row"><span>Items (+13.5% markup)</span><span class="yellow">$211</span></div>
+        <div class="fee-row"><span>Delivery fee (waived $75+)</span><span class="green">$0</span></div>
+        <div class="fee-row"><span>Service fee (~10%)</span><span class="yellow">$21</span></div>
+        <div class="fee-row"><span>Tip (~15%)</span><span class="yellow">$32</span></div>
+        <div class="fee-row" style="border-top:1px solid var(--border);padding-top:8px;margin-top:4px"><span class="bold">Total</span><span class="red bold">$264</span></div>
+        <div class="muted small mt4">$264 Costco + $138 Safeway = $402 → over $350 cap</div>
+      </div>
+    </div>
+
+    <div class="card-title" style="margin-top:4px">Viable Same-Day Options</div>
+    <table>
+      <thead><tr><th>Option</th><th>All-in Cost</th><th>vs Cap</th><th>When to use</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Reduced order — non-perishables only</strong><br><span class="muted small">Skip meats/eggs (buy at Safeway). Order only: Oikos, coconut milk, rice, tortillas, avocado oil, PB, coffee, frozen veggies, fruit (~$103 in items)</span></td><td class="yellow">~$142</td><td class="green bold">$142 + $138 = $280 ✓</td><td>When you can't get to Costco but need bulk pantry items</td></tr>
+        <tr><td><strong>Protein-only order</strong><br><span class="muted small">Chicken thighs, ground turkey, beef, eggs only (~$84 in items). Everything else from Safeway.</span></td><td class="yellow">~$119</td><td class="green bold">$119 + $138 = $257 ✓</td><td>When you're low on protein and want fresh delivery</td></tr>
+        <tr><td><strong>Upgrade to Executive ($130/yr)?</strong><br><span class="muted small">Executive gives 2% annual reward (~$50–80/yr on your spend) + $10/month delivery credit on sameday.costco.com. Breakeven vs Gold Star at ~$2,500/yr Costco spend.</span></td><td class="muted">$65 upgrade</td><td class="green">Pays off if you spend $2,500+/yr at Costco</td><td>Worth considering if you go in-store monthly</td></tr>
+      </tbody>
+    </table>
+
+    <div class="info-box small mt8">
+      <strong>Best practice:</strong> Do the full Costco haul in-store once a month. Reserve same-day delivery for months when you genuinely can't go in — and when you do, order only pantry staples or proteins, not the full cart. Always use <strong>sameday.costco.com</strong> (Gold Star membership gets you the ~13% member markup) rather than the Instacart app directly (~24% markup without a linked membership). No monthly delivery credits with Gold Star — every delivery dollar counts, so keep orders lean.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Costco Shopping List — One Trip Per Month</div>
+    <table>
+      <thead><tr><th>Item</th><th>Package</th><th>Price</th><th>Qty/Month</th><th>Monthly Cost</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Boneless skinless chicken thighs</strong></td><td>~7 lb pack</td><td>$2.99/lb</td><td>9.4 lbs</td><td class="green bold">$28</td><td>Buy 1–2 packs, freeze half</td></tr>
+        <tr><td><strong>90/93% lean ground beef</strong></td><td>10 lb pack</td><td>$3.29/lb</td><td>3.75 lbs</td><td class="green bold">$12</td><td>Kirkland; use closest lean available</td></tr>
+        <tr><td><strong>93% ground turkey</strong></td><td>~6.8 lb pack</td><td>$2.59/lb</td><td>3.75 lbs</td><td class="green bold">$10</td><td>Jennie-O or Butterball</td></tr>
+        <tr><td><strong>Organic free-range eggs</strong></td><td>24-count</td><td>$8.59/24ct</td><td>90 eggs (~4 packs)</td><td class="green bold">$34</td><td>Buy 4 × 24-ct packs</td></tr>
+        <tr><td><strong>Oikos Triple Zero</strong></td><td>18 × 5.3oz cups</td><td>$13.49/18-pk</td><td>30 cups (2 packs)</td><td class="green bold">$27</td><td>$0.75/cup vs $1.30 at Safeway — always buy at Costco</td></tr>
+        <tr><td><strong>Lite coconut milk</strong></td><td>6-pack × 13.66oz</td><td>$6.97/6-pk</td><td>~4 cans (1 pack/6 wks)</td><td class="green bold">$5</td><td>Thai Kitchen organic; ~1 can/week — buy 1 pack, lasts 6 weeks</td></tr>
+        <tr><td><strong>Jasmine rice</strong></td><td>25 lb bag</td><td>$21.49/bag</td><td>½ bag</td><td class="green bold">$11</td><td>1 bag lasts 2 months</td></tr>
+        <tr><td><strong>Flour tortillas (10")</strong></td><td>2 × 15-count</td><td>$11.99/pack</td><td>1 pack (~30)</td><td class="green bold">$12</td><td>Mission; 1/day for breakfast + lunch wraps</td></tr>
+        <tr><td><strong>Avocado oil</strong></td><td>2L bottle</td><td>$21.99/bottle</td><td>½ bottle</td><td class="green bold">$11</td><td>Chosen Foods; lasts ~2 months</td></tr>
+        <tr><td><strong>Natural peanut butter</strong></td><td>2 × 28oz</td><td>$9.79/2-pack</td><td>½ pack</td><td class="green bold">$5</td><td>Kirkland Organic or Santa Cruz — ingredients must be peanuts + salt only; check label</td></tr>
+        <tr><td><strong>Folgers coffee</strong></td><td>43.5oz can</td><td>$14.99/can</td><td>½ can</td><td class="green bold">$8</td><td>1 can lasts ~6–8 weeks</td></tr>
+        <tr><td><strong>Navel oranges</strong></td><td>8 lb bag</td><td>$6.29/bag</td><td>1 bag (~30 oranges)</td><td class="green bold">$6</td><td>1 orange/day</td></tr>
+        <tr><td><strong>Bananas</strong></td><td>3 lb bag</td><td>$1.49/bag</td><td>4 bags</td><td class="green bold">$6</td><td>1–2 bananas/day; buy in 2 trips if ripening too fast</td></tr>
+        <tr><td><strong>Sesame oil</strong></td><td>33.8oz bottle</td><td>$11.59/bottle</td><td>¼ bottle</td><td class="green bold">$3</td><td>Bibigo; lasts 4+ months</td></tr>
+        <tr><td><strong>Frozen broccoli florets</strong></td><td>4 lb bag</td><td>$7.99/bag</td><td>1 bag</td><td class="green bold">$8</td><td>Roast from frozen at 425°F, 25–30 min with avocado oil + salt; no thawing needed</td></tr>
+        <tr><td><strong>Frozen cauliflower</strong></td><td>4 lb bag</td><td>$6.99/bag</td><td>½ bag</td><td class="green bold">$4</td><td>Alternate roasting veggie; rotate with broccoli or roast both together</td></tr>
+        <tr style="background:var(--surface2)"><td colspan="4"><strong>Costco Subtotal</strong></td><td class="bold" style="font-size:15px">~$186</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Safeway Shopping List — Weekly / Ongoing</div>
+    <div class="info-box small mb8">Buy Barebell bars 2 packs/week. Fairlife milk lasts 1+ week — buy weekly. Pick up fresh garlic, ginger, onion, limes as needed.</div>
+    <table>
+      <thead><tr><th>Item</th><th>Size</th><th>Price</th><th>Qty/Month</th><th>Monthly Cost</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Barebell protein bars</strong></td><td>4-pack</td><td>~$11/4-pack</td><td>7–8 packs (30 bars)</td><td class="yellow bold">$83</td><td>1 bar/day. Largest Safeway cost.</td></tr>
+        <tr><td><strong>Fairlife milk (for coffee)</strong></td><td>52oz bottle</td><td>~$5.50/bottle</td><td>3–4 bottles</td><td class="green bold">$20</td><td>Lasts 1+ week; use in coffee daily</td></tr>
+        <tr><td><strong>Fresh garlic, ginger, onion</strong></td><td>weekly top-up</td><td>~$8–10/week</td><td>4 weeks</td><td class="green bold">$35</td><td>Core spice base for all cooking; buy fresh weekly</td></tr>
+        <tr style="background:var(--surface2)"><td colspan="4"><strong>Safeway Subtotal</strong></td><td class="bold" style="font-size:15px">~$138</td><td></td></tr>
+      </tbody>
+    </table>
+    <div class="warn-box small mt8">
+      <strong>Barebell bars ($83/month)</strong> are the biggest swing item. If you find them at Costco as a seasonal/rotating item (~$30 for 12-pack = $75/month for 30), grab them — saves ~$8 and reduces Safeway trips.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">What's Already on Amazon (not in grocery budget)</div>
+    <table>
+      <thead><tr><th>Item</th><th>Frequency</th><th>Monthly avg</th></tr></thead>
+      <tbody>
+        <tr><td>Fairlife Nutrition Plan / Core Power shakes (42g)</td><td>Daily (30/mo)</td><td class="muted">Amazon Subscribe</td></tr>
+        <tr><td>Something Nice Zero Pro toothpaste</td><td>Every 2 months ($36)</td><td class="muted">$18 avg</td></tr>
+        <tr><td>Collagen</td><td>Every 2 months ($46.75)</td><td class="muted">$23 avg</td></tr>
+        <tr><td>Creatine</td><td>Every 3 months ($21.50)</td><td class="muted">$7 avg</td></tr>
+        <tr><td>Longevity Mix (starting ~June)</td><td>Monthly ($98)</td><td class="muted">$98</td></tr>
+        <tr style="background:var(--surface2)"><td colspan="2"><strong>Total Amazon subscriptions</strong></td><td class="bold">~$146/mo avg</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     TAB 7: CUSTOMIZE
+══════════════════════════════════════════════════════════════ -->
+<div id="tab-customize" class="tab">
+
+  <div class="card">
+    <div class="card-title">Variable Spending Caps</div>
+    <div class="info-box small" style="margin-bottom:12px">Adjust your monthly cap for each category. Changes instantly update the Monthly Budget surplus and Bilt paydown timeline. Set to 0 to remove a category entirely.</div>
+    <div id="cust-var-list"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+      <span>Total variable budget: <strong id="cust-var-total" class="blue"></strong> &nbsp;<span id="cust-var-diff" class="muted small"></span></span>
+      <button class="btn" onclick="resetVarCaps()">Reset to defaults</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Fixed Expenses — Enable / Disable</div>
+    <div class="info-box small" style="margin-bottom:12px">Uncheck to remove an expense from all months — use this when a payment ends, a subscription is cancelled, or a card is closed. The monthly surplus and paydown timeline update instantly.</div>
+    <div id="cust-fixed-list"></div>
+    <button class="btn" style="margin-top:12px" onclick="resetFixedToggles()">Re-enable all</button>
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// PIN LOCK (skipped on localhost)
+// ═══════════════════════════════════════════════════════════
+(function() {
+  const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+  if (isLocal) return;
+  if (sessionStorage.getItem('fin-unlocked')) return;
+
+  const stored = localStorage.getItem('fin-pin');
+  const isFirst = !stored;
+
+  async function hashPin(pin) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pin + 'fin-2026'));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+  }
+
+  function unlock() { sessionStorage.setItem('fin-unlocked','1'); ov.remove(); }
+
+  const ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;background:#0f172a;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;font-family:-apple-system,BlinkMacSystemFont,sans-serif';
+  ov.innerHTML = `
+    <div style="font-size:40px">💰</div>
+    <h2 style="color:#f1f5f9;font-size:20px;font-weight:700;margin:0">${isFirst ? 'Set a PIN for your dashboard' : 'Finance Dashboard'}</h2>
+    <p style="color:#94a3b8;font-size:13px;margin:0">${isFirst ? 'Choose a 4–8 digit PIN to protect your data' : 'Enter your PIN to continue'}</p>
+    <input id="pin-input" type="password" inputmode="numeric" maxlength="8" placeholder="••••"
+      style="background:#1e293b;border:1px solid #334155;border-radius:10px;color:#f1f5f9;font-size:28px;letter-spacing:10px;outline:none;padding:12px 20px;text-align:center;width:160px;-webkit-text-security:disc">
+    <p id="pin-err" style="color:#ef4444;font-size:13px;height:18px;margin:0"></p>
+    <button id="pin-btn" style="background:#3b82f6;border:none;border-radius:8px;color:#fff;cursor:pointer;font-size:15px;font-weight:600;padding:12px 36px;-webkit-appearance:none">
+      ${isFirst ? 'Set PIN' : 'Unlock'}
+    </button>
+    ${!isFirst ? '<p id="pin-reset" style="color:#475569;font-size:11px;cursor:pointer;text-decoration:underline;margin:0">Forgot PIN? Reset (clears all data)</p>' : ''}
+  `;
+  document.body.appendChild(ov);
+  setTimeout(() => document.getElementById('pin-input').focus(), 100);
+
+  document.getElementById('pin-btn').onclick = async () => {
+    const val = document.getElementById('pin-input').value.trim();
+    const err = document.getElementById('pin-err');
+    if (val.length < 4) { err.textContent = 'PIN must be at least 4 digits'; return; }
+    const hash = await hashPin(val);
+    if (isFirst) {
+      localStorage.setItem('fin-pin', hash); unlock();
+    } else {
+      if (hash === stored) { unlock(); }
+      else { err.textContent = 'Incorrect PIN'; document.getElementById('pin-input').value = ''; document.getElementById('pin-input').focus(); }
+    }
+  };
+  document.getElementById('pin-input').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('pin-btn').click(); });
+  const resetEl = document.getElementById('pin-reset');
+  if (resetEl) resetEl.onclick = () => { if (confirm('This will clear all saved data and PIN. Continue?')) { localStorage.clear(); sessionStorage.clear(); location.reload(); } };
+})();
+
+// ═══════════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════════
+
+const INCOME = 8300;
+
+const MONTHS = [
+  {
+    id: 'june', label: 'June 2026',
+    phase: 'bilt',
+    fixed: [
+      { name: 'Rent (Bilt Housing ACH)', amount: 3347, card: 'Bilt' },
+      { name: 'Capital One auto loan', amount: 446, card: 'Auto-pay' },
+      { name: 'Student loans', amount: 250, card: 'Auto-pay' },
+      { name: 'Affirm Plan A', amount: 184, card: 'Affirm' },
+      { name: 'Affirm Plan B', amount: 198, card: 'Affirm' },
+      { name: 'Internet (Comcast)', amount: 41, card: 'Ink Preferred' },
+      { name: 'PG&E electricity', amount: 28, card: 'Auto-pay' },
+      { name: 'GEICO auto insurance', amount: 161, card: 'Blue Biz Plus' },
+      { name: 'Equinox', amount: 237, card: 'Blue Biz Plus' },
+      { name: 'Amazon Prime', amount: 16, card: 'Amazon Prime Visa' },
+      { name: 'Longevity Mix (new)', amount: 98, card: 'Amazon Prime Visa' },
+      { name: 'Apple subscriptions', amount: 31, card: 'Apple Card' },
+    ],
+    extras: [{ label: 'Dental (~2 visits)', amount: 400 }],
+    biltTarget: 1428, biltAfter: 3769,
+    note: '⚠️ San Diego trip — apply any underspend directly to Bilt. 10% intro APR adds ~$41 interest this month.',
+  },
+  {
+    id: 'july', label: 'July 2026',
+    phase: 'bilt',
+    fixed: [
+      { name: 'Rent (Bilt Housing ACH)', amount: 3347, card: 'Bilt' },
+      { name: 'Capital One auto loan', amount: 446, card: 'Auto-pay' },
+      { name: 'Student loans', amount: 250, card: 'Auto-pay' },
+      { name: 'Affirm Plan A', amount: 184, card: 'Affirm' },
+      { name: 'Affirm Plan B (LAST)', amount: 198, card: 'Affirm' },
+      { name: 'Internet (Comcast)', amount: 41, card: 'Ink Preferred' },
+      { name: 'PG&E electricity', amount: 28, card: 'Auto-pay' },
+      { name: 'GEICO auto insurance', amount: 161, card: 'Blue Biz Plus' },
+      { name: 'Equinox', amount: 237, card: 'Blue Biz Plus' },
+      { name: 'Amazon Prime', amount: 16, card: 'Amazon Prime Visa' },
+      { name: 'Longevity Mix (new)', amount: 98, card: 'Amazon Prime Visa' },
+      { name: 'Apple subscriptions', amount: 31, card: 'Apple Card' },
+    ],
+    extras: [{ label: 'Dental (final visit)', amount: 200 }],
+    biltTarget: 1628, biltAfter: 2172,
+    note: 'Last Affirm Plan B payment — $198/month freed starting August. 10% intro APR adds ~$29 interest this month.',
+  },
+  {
+    id: 'august', label: 'August 2026',
+    phase: 'bilt',
+    fixed: [
+      { name: 'Rent (Bilt Housing ACH)', amount: 3347, card: 'Bilt' },
+      { name: 'Capital One auto loan', amount: 446, card: 'Auto-pay' },
+      { name: 'Student loans', amount: 250, card: 'Auto-pay' },
+      { name: 'Affirm Plan A', amount: 184, card: 'Affirm' },
+      { name: 'Internet (Comcast)', amount: 41, card: 'Ink Preferred' },
+      { name: 'PG&E electricity', amount: 28, card: 'Auto-pay' },
+      { name: 'GEICO auto insurance', amount: 161, card: 'Blue Biz Plus' },
+      { name: 'Equinox', amount: 237, card: 'Blue Biz Plus' },
+      { name: 'Amazon Prime', amount: 16, card: 'Amazon Prime Visa' },
+      { name: 'Longevity Mix (new)', amount: 98, card: 'Amazon Prime Visa' },
+      { name: 'Apple subscriptions', amount: 31, card: 'Apple Card' },
+      { name: 'Remitly (family support)', amount: 320, card: 'Chase checking' },
+    ],
+    extras: [],
+    biltTarget: 1706, biltAfter: 484,
+    note: 'Plan B ends, Remitly resumes. 10% fixed APR (confirmed — entire balance is new card purchases, zero at 34.74%). ~$18 interest. $484 remains — clears in September.',
+  },
+  {
+    id: 'september', label: 'September 2026',
+    phase: 'bilt',
+    fixed: [
+      { name: 'Rent (Bilt Housing ACH)', amount: 3347, card: 'Bilt' },
+      { name: 'Capital One auto loan', amount: 446, card: 'Auto-pay' },
+      { name: 'Student loans', amount: 250, card: 'Auto-pay' },
+      { name: 'Affirm Plan A', amount: 184, card: 'Affirm' },
+      { name: 'Internet (Comcast)', amount: 41, card: 'Ink Preferred' },
+      { name: 'PG&E electricity', amount: 28, card: 'Auto-pay' },
+      { name: 'GEICO auto insurance', amount: 161, card: 'Blue Biz Plus' },
+      { name: 'Equinox', amount: 237, card: 'Blue Biz Plus' },
+      { name: 'Amazon Prime', amount: 16, card: 'Amazon Prime Visa' },
+      { name: 'Longevity Mix (new)', amount: 98, card: 'Amazon Prime Visa' },
+      { name: 'Apple subscriptions', amount: 31, card: 'Apple Card' },
+      { name: 'Remitly (family support)', amount: 320, card: 'Chase checking' },
+    ],
+    extras: [],
+    biltTarget: 488, biltAfter: 0,
+    note: '🎉 Bilt paid off! ~$4 final interest. Remaining $1,218 surplus immediately seeds emergency fund.',
+  },
+  {
+    id: 'october', label: 'October 2026',
+    phase: 'emergency',
+    fixed: [
+      { name: 'Rent (Bilt Housing ACH)', amount: 3347, card: 'Bilt' },
+      { name: 'Capital One auto loan', amount: 446, card: 'Auto-pay' },
+      { name: 'Student loans', amount: 250, card: 'Auto-pay' },
+      { name: 'Affirm Plan A', amount: 184, card: 'Affirm' },
+      { name: 'Internet (Comcast)', amount: 41, card: 'Ink Preferred' },
+      { name: 'PG&E electricity', amount: 28, card: 'Auto-pay' },
+      { name: 'GEICO auto insurance', amount: 161, card: 'Blue Biz Plus' },
+      { name: 'Equinox', amount: 237, card: 'Blue Biz Plus' },
+      { name: 'Amazon Prime', amount: 16, card: 'Amazon Prime Visa' },
+      { name: 'Longevity Mix (new)', amount: 98, card: 'Amazon Prime Visa' },
+      { name: 'Apple subscriptions', amount: 31, card: 'Apple Card' },
+      { name: 'Remitly (family support)', amount: 320, card: 'Chase checking' },
+    ],
+    extras: [{ label: 'Bilt fee reserve (set aside)', amount: 82 }],
+    emergencyTarget: 1624, emergencyAfter: 2842,
+    note: 'Start setting aside $82/month for Bilt March 2027 fee. Emergency fund: $2,842 (includes $1,218 seeded from September).',
+  },
+  {
+    id: 'november', label: 'November 2026',
+    phase: 'emergency',
+    fixed: [
+      { name: 'Rent (Bilt Housing ACH)', amount: 3347, card: 'Bilt' },
+      { name: 'Capital One auto loan', amount: 446, card: 'Auto-pay' },
+      { name: 'Student loans', amount: 250, card: 'Auto-pay' },
+      { name: 'Affirm Plan A', amount: 184, card: 'Affirm' },
+      { name: 'Internet (Comcast)', amount: 41, card: 'Ink Preferred' },
+      { name: 'PG&E electricity', amount: 28, card: 'Auto-pay' },
+      { name: 'GEICO auto insurance', amount: 161, card: 'Blue Biz Plus' },
+      { name: 'Equinox', amount: 237, card: 'Blue Biz Plus' },
+      { name: 'Amazon Prime', amount: 16, card: 'Amazon Prime Visa' },
+      { name: 'Longevity Mix (new)', amount: 98, card: 'Amazon Prime Visa' },
+      { name: 'Apple subscriptions', amount: 31, card: 'Apple Card' },
+      { name: 'Remitly (family support)', amount: 320, card: 'Chase checking' },
+    ],
+    extras: [{ label: 'Bilt fee reserve', amount: 82 }],
+    emergencyTarget: 1706, emergencyAfter: 4548,
+    note: 'Emergency fund growing — $272 short of $5,000 goal. One more month.',
+  },
+  {
+    id: 'december', label: 'December 2026',
+    phase: 'roth',
+    fixed: [
+      { name: 'Rent (Bilt Housing ACH)', amount: 3347, card: 'Bilt' },
+      { name: 'Capital One auto loan', amount: 446, card: 'Auto-pay' },
+      { name: 'Student loans', amount: 250, card: 'Auto-pay' },
+      { name: 'Affirm Plan A', amount: 184, card: 'Affirm' },
+      { name: 'Internet (Comcast)', amount: 41, card: 'Ink Preferred' },
+      { name: 'PG&E electricity', amount: 28, card: 'Auto-pay' },
+      { name: 'GEICO auto insurance', amount: 161, card: 'Blue Biz Plus' },
+      { name: 'Equinox', amount: 237, card: 'Blue Biz Plus' },
+      { name: 'Amazon Prime', amount: 16, card: 'Amazon Prime Visa' },
+      { name: 'Longevity Mix (new)', amount: 98, card: 'Amazon Prime Visa' },
+      { name: 'Apple subscriptions', amount: 31, card: 'Apple Card' },
+      { name: 'Remitly (family support)', amount: 320, card: 'Chase checking' },
+    ],
+    extras: [{ label: 'Bilt fee reserve', amount: 82 }],
+    emergencyTarget: 452, emergencyAfter: 5000,
+    rothStart: 1254,
+    note: '🎉 Emergency fund hits $5,000! Remaining $1,352 starts Roth IRA this month.',
+  },
+];
+
+const VARIABLE_CATS = [
+  { id: 'groceries', name: 'Groceries', cap: 350, card: 'Citi Strata Premier', rate: '3x TYP', warning: 'Avg was $443. One planned weekly shop. Longevity Mix (~$98/mo) replacing prior Safeway supplement spend — update cap once you know your typical supplement amount.' },
+  { id: 'ubereats', name: 'Uber Eats', cap: 160, card: 'Bilt', rate: '3x Bilt', warning: 'Max once/week (~$40/order).' },
+  { id: 'dining', name: 'Dining out', cap: 250, card: 'Freedom Flex', rate: '3x UR', warning: 'Avg was $571. Max 2 sit-down dinners.' },
+  { id: 'gas', name: 'Gas', cap: 150, card: 'WF Autograph', rate: '3x WF', warning: '~2–3 fill-ups/month.' },
+  { id: 'amazon', name: 'Amazon', cap: 150, card: 'Amazon Prime Visa', rate: '5% cash', warning: '48-hour rule on any purchase over $30.' },
+  { id: 'cvs', name: 'CVS / Pharmacy', cap: 75, card: 'Freedom Flex', rate: '3x UR permanent', warning: 'Medications + essentials.' },
+  { id: 'personal', name: 'Personal care', cap: 85, card: 'Amex Blue Biz Plus', rate: '2x MR', warning: 'Skincare + haircut.' },
+  { id: 'entertainment', name: 'Entertainment', cap: 75, card: 'WF Autograph', rate: '3x WF', warning: 'Movies, books, events.' },
+  { id: 'parking', name: 'Parking / Transit', cap: 90, card: 'Amex Green', rate: '3x MR', warning: 'Equinox $1/day avg (~$30/mo) + Work $5.50/day × 2.5 days/wk (~$60/mo) = ~$90/mo.' },
+  { id: 'misc', name: 'Misc / Other', cap: 50, card: 'Amex Blue Biz Plus', rate: '2x MR', warning: 'Everything else.' },
+];
+
+const CARD_RULES = [
+  { category: 'Rent', spend: '$3,347', card: 'Bilt', rate: '1x Bilt', notes: 'Only card that earns on rent. Non-negotiable.' },
+  { category: 'Dining out', spend: '$250 cap', card: 'Chase Freedom Flex', rate: '3x UR', notes: 'Pools with Sapphire Preferred → transferable to Hyatt/United.' },
+  { category: 'Uber Eats / delivery', spend: '$160 cap', card: 'Freedom Flex OR Bilt', rate: '3x UR / 3x Bilt', notes: 'Route to Bilt to build Silver status (same 3x rate). Apple Card also earns 3% Daily Cash on Uber Eats — use only if you prefer instant cash over transferable points.' },
+  { category: 'Groceries (in-store)', spend: '$350 cap', card: 'Citi Strata Premier', rate: '3x TYP', notes: 'Best consistent in-store supermarket card.' },
+  { category: 'Amazon', spend: '$150 cap', card: 'Amazon Prime Visa', rate: '5% cash', notes: 'Q2 only: Freedom Flex earns 5x UR — use that instead if chasing UR.' },
+  { category: 'Internet / Comcast', spend: '$41', card: 'Chase Ink Business Preferred', rate: '3x UR', notes: 'Explicitly covers internet/cable/phone. Put on autopay.' },
+  { category: 'Gas', spend: '$150', card: 'WF Autograph', rate: '3x WF', notes: 'Citi Strata Premier also 3x — both tied. No annual fee on Autograph.' },
+  { category: 'Apple / Streaming', spend: '$31', card: 'Apple Card', rate: '3% Daily Cash', notes: 'Auto-charged to Apple Card → 3% cash. WF Autograph also 3x WF (tied at ~1¢/pt) but Apple Card Daily Cash is instant and you\'re already set up there.' },
+  { category: 'CVS / Pharmacy', spend: '$75', card: 'Chase Freedom Flex', rate: '3x UR', notes: 'Permanent 3x drugstore bonus — unmatched in portfolio.' },
+  { category: 'Parking / Meters', spend: '$90', card: 'Amex Green', rate: '3x MR', notes: 'Covers parking, tolls, rideshare, subway explicitly.' },
+  { category: 'Lyft / Rideshare', spend: 'varies', card: 'Sapphire Preferred', rate: '5x UR (Lyft)', notes: 'Chase-Lyft partnership gives 5x. Amex Green also 3x MR.' },
+  { category: 'Equinox / Gym', spend: '$237', card: 'Amex Blue Biz Plus', rate: '2x MR flat', notes: 'No card gives a gym category bonus — 2x flat-rate wins.' },
+  { category: 'GEICO / Insurance', spend: '$161', card: 'Amex Blue Biz Plus', rate: '2x MR flat', notes: 'Insurance MCC 6300 — no category bonus. 2x flat-rate is best.' },
+  { category: 'United flights', spend: 'varies', card: 'Chase United Business 9642', rate: '8x United', notes: 'Close before Apr 2027. Use Gateway (5x) after.' },
+  { category: 'Non-United flights', spend: 'varies', card: 'Sapphire Preferred (Chase portal)', rate: '5x UR', notes: 'UR → Hyatt/United more flexible than C1 miles.' },
+  { category: 'Hotels', spend: 'varies', card: 'Venture X (C1 portal)', rate: '10x C1 miles', notes: 'Or Citi Strata Premier direct 3x TYP. Venture X portal wins on rate.' },
+  { category: 'Online shopping (non-Amazon)', spend: 'varies', card: 'BofA Cash Rewards', rate: '3% cash', notes: 'Set to "Online Shopping" category in BofA app. Only gap your portfolio has.' },
+  { category: 'Apple Card — 3% merchants', spend: 'varies', card: 'Apple Card', rate: '3% Daily Cash', notes: 'Uber, Uber Eats, Nike, Walgreens, Exxon/Mobil, Panera, T-Mobile, Ace Hardware. Use when buying at these merchants if you prefer cash over points.' },
+  { category: 'Apple Card — Apple Pay (2%)', spend: 'varies', card: 'Apple Card via Apple Pay', rate: '2% Daily Cash', notes: 'Fallback when no better card fits and merchant accepts Apple Pay. Amex Blue Biz Plus 2x MR is better for travel redemptions (worth ~2–3¢/pt); Apple Card wins if you want pure cash.' },
+  { category: 'Everything else', spend: 'misc', card: 'Amex Blue Biz Plus', rate: '2x MR', notes: 'Best flat catch-all. 2x MR on all purchases up to $50k/year, no annual fee.' },
+];
+
+const CHECKS = {
+  urgent: [
+    { id: 'close-ink', text: 'Close Chase Ink Business Preferred (2840) — dormant, saves $95 from Feb 2027. Call 1-800-432-3117 or do it via Chase.com → Account Services.', tag: 'Do now' },
+    { id: 'activate-q2', text: 'Activate Freedom Flex Q2 bonus at chase.com/freedom — 5x UR on Amazon + Chase Travel through June 30.', tag: 'Do now' },
+    { id: 'bilt-15th', text: 'Send any checking surplus to Bilt on the 15th of this month.', tag: 'This month' },
+    { id: 'bilt-lastday', text: 'Send any remaining checking surplus to Bilt on the last day of this month.', tag: 'This month' },
+    { id: 'dining-cap', text: 'Set a $250/month dining budget alert in your bank app. You averaged $571 — this is the single biggest lever.', tag: 'Do now' },
+  ],
+  soon: [
+    { id: 'venture-x', text: 'Decide on Venture X before the next annual fee posts ($395). Keep if you use the $300 Capital One Travel credit — it\'s fee-positive. Cancel 60+ days before fee date.', tag: 'Before fee' },
+    { id: 'close-united', text: 'Close Chase United Business (9642) before April 2027 — $150 fee, United Gateway (free) covers all United needs.', tag: 'Before Apr 2027' },
+    { id: 'bilt-reserve', text: 'Starting October 2026, set aside $82/month for Bilt\'s $495 March 2027 annual fee. Transfer to a separate savings account.', tag: 'Oct 2026' },
+    { id: 'bofa-category', text: 'Log into BofA app → Rewards → set your 3% category to "Online Shopping" for BofA Cash Rewards card.', tag: 'Soon' },
+  ],
+  monthly: [
+    { id: 'rec-bilt-15', text: 'Transfer any checking surplus to Bilt on the 15th.', tag: 'Every 15th' },
+    { id: 'rec-bilt-end', text: 'Transfer any checking surplus to Bilt on the last day of the month.', tag: 'Month end' },
+    { id: 'rec-dining', text: 'Check dining spend by mid-month. Over $125? Switch to home cooking for the rest of the month.', tag: 'Monthly' },
+    { id: 'rec-amazon', text: 'Review Amazon cart before checkout. 48-hour rule on any item over $30.', tag: 'Monthly' },
+    { id: 'rec-ubereats', text: 'Track Uber Eats orders — max 4 per month (~once per week).', tag: 'Monthly' },
+    { id: 'rec-grocery', text: 'Plan the week\'s meals before grocery shopping. One big shop + one top-up only.', tag: 'Weekly' },
+  ],
+  future: [
+    { id: 'jan-2027', text: 'January 2027: Roth IRA in full swing — $583/month toward $7,000/year limit. Route to Fidelity or Vanguard target-date fund.', tag: '2027' },
+    { id: 'jan-2028', text: 'January 2028: Affirm Plan A ends — $184/month freed. Increase Roth IRA or taxable brokerage.', tag: '2028' },
+    { id: 'amex-green', text: 'Never close the Amex Green — oldest card (credit age), CLEAR credit ($209) exceeds the $150 fee every year.', tag: 'Permanent' },
+    { id: 'aa-cards', text: 'Evaluate Citi AAdvantage + CitiBusiness AAdvantage ($198/yr combined) — only worth keeping if you fly AA 2–3 round trips/year.', tag: 'Assess annually' },
+  ],
+};
+
+// ═══════════════════════════════════════════════════════════
+// SETTINGS
+// ═══════════════════════════════════════════════════════════
+
+function getSettings() {
+  try { return JSON.parse(localStorage.getItem('fin-settings') || '{}'); } catch(e) { return {}; }
+}
+function saveSettings(s) { localStorage.setItem('fin-settings', JSON.stringify(s)); }
+
+function getVarCap(catId) {
+  const s = getSettings();
+  const def = VARIABLE_CATS.find(c => c.id === catId).cap;
+  return (s.varCaps && s.varCaps[catId] != null) ? Number(s.varCaps[catId]) : def;
+}
+function getVarTotal() {
+  return VARIABLE_CATS.reduce((sum, cat) => sum + getVarCap(cat.id), 0);
+}
+function getEnabledFixed(month) {
+  const dis = getSettings().disabledFixed || [];
+  return month.fixed.filter(f => !dis.includes(f.name));
+}
+
+function setVarCap(catId, val) {
+  const s = getSettings();
+  if (!s.varCaps) s.varCaps = {};
+  const def = VARIABLE_CATS.find(c => c.id === catId).cap;
+  const n = Number(val);
+  if (n === def) delete s.varCaps[catId]; else s.varCaps[catId] = n;
+  saveSettings(s);
+  renderMonthBody();
+  renderCustomize();
+}
+function toggleFixed(name, enabled) {
+  const s = getSettings();
+  if (!s.disabledFixed) s.disabledFixed = [];
+  if (!enabled) { if (!s.disabledFixed.includes(name)) s.disabledFixed.push(name); }
+  else { s.disabledFixed = s.disabledFixed.filter(n => n !== name); }
+  saveSettings(s);
+  renderMonthBody();
+  renderCustomize();
+}
+function toggleCard(category, hide) {
+  const s = getSettings();
+  if (!s.hiddenCards) s.hiddenCards = [];
+  if (hide) { if (!s.hiddenCards.includes(category)) s.hiddenCards.push(category); }
+  else { s.hiddenCards = s.hiddenCards.filter(c => c !== category); }
+  saveSettings(s);
+  renderCardTable();
+}
+function restoreCards() {
+  const s = getSettings();
+  delete s.hiddenCards;
+  saveSettings(s);
+  renderCardTable();
+}
+function resetVarCaps() {
+  const s = getSettings();
+  delete s.varCaps;
+  saveSettings(s);
+  renderMonthBody();
+  renderCustomize();
+}
+function resetFixedToggles() {
+  const s = getSettings();
+  delete s.disabledFixed;
+  saveSettings(s);
+  renderMonthBody();
+  renderCustomize();
+}
+
+// ═══════════════════════════════════════════════════════════
+// PAYDOWN SIMULATION
+// ═══════════════════════════════════════════════════════════
+
+function computePaydown() {
+  const BILT_APR = 0.10;
+  let biltBal = parseFloat(localStorage.getItem('bilt-balance') || '5154');
+  let emBal = 0;
+  const out = {};
+  MONTHS.forEach(m => {
+    const enabledFixed = getEnabledFixed(m);
+    const fixedTotal = enabledFixed.reduce((s, f) => s + f.amount, 0);
+    const extrasTotal = (m.extras || []).reduce((s, x) => s + x.amount, 0);
+    const varTotal = getVarTotal();
+    const surplus = Math.max(0, INCOME - fixedTotal - extrasTotal - varTotal);
+    if (m.phase === 'bilt') {
+      const interest = Math.round(biltBal * BILT_APR / 12);
+      const owed = biltBal + interest;
+      if (surplus >= owed) {
+        const seed = Math.round(surplus - owed);
+        emBal += seed;
+        biltBal = 0;
+        out[m.id] = { surplus, biltTarget: Math.round(owed), biltAfter: 0, seed };
+      } else {
+        biltBal = Math.round(owed - surplus);
+        out[m.id] = { surplus, biltTarget: Math.round(surplus), biltAfter: biltBal, seed: 0 };
+      }
+    } else {
+      emBal += surplus;
+      const prevEm = emBal - surplus;
+      const emAfter = Math.min(5000, emBal);
+      const emTarget = Math.max(0, Math.round(emAfter - prevEm));
+      let rothStart = null;
+      if (emBal >= 5000 && prevEm < 5000) rothStart = Math.round(emBal - 5000);
+      else if (prevEm >= 5000) rothStart = surplus;
+      out[m.id] = { surplus, emergencyTarget: emTarget, emergencyAfter: Math.round(emAfter), rothStart };
+    }
+  });
+  return out;
+}
+
+// ═══════════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════════
+
+function showTab(id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+  if (id === 'customize') renderCustomize();
+}
+
+// ═══════════════════════════════════════════════════════════
+// BILT TRACKER
+// ═══════════════════════════════════════════════════════════
+
+function saveBilt() {
+  const v = document.getElementById('bilt-input').value;
+  if (v) localStorage.setItem('bilt-balance', v);
+  else localStorage.removeItem('bilt-balance');
+  renderBilt();
+}
+
+function renderBilt() {
+  const stored = localStorage.getItem('bilt-balance');
+  const inp = document.getElementById('bilt-input');
+  if (stored && !inp.value) inp.value = stored;
+  const val = parseFloat(inp.value || stored || 0);
+  const wrap = document.getElementById('bilt-progress-wrap');
+  const fill = document.getElementById('bilt-fill');
+  const pctLabel = document.getElementById('bilt-pct-label');
+  const remLabel = document.getElementById('bilt-remaining-label');
+  const status = document.getElementById('bilt-status');
+  const START = 5154;
+
+  if (!inp.value && !stored) { wrap.style.display = 'none'; status.textContent = 'Enter your current Bilt balance above.'; return; }
+
+  wrap.style.display = 'block';
+  const paid = START - val;
+  const pct = Math.min(100, Math.max(0, (paid / START) * 100));
+
+  if (val <= 0) {
+    fill.style.width = '100%';
+    fill.style.background = 'var(--green)';
+    pctLabel.textContent = '100% paid off';
+    remLabel.textContent = '$0 remaining';
+    status.innerHTML = '<span class="green bold">🎉 Bilt is paid off! Time to build your emergency fund.</span>';
+  } else {
+    fill.style.width = pct + '%';
+    fill.style.background = pct > 60 ? 'var(--green)' : pct > 30 ? 'var(--yellow)' : 'var(--red)';
+    pctLabel.textContent = pct.toFixed(0) + '% paid (' + '$' + paid.toFixed(0) + ')';
+    remLabel.textContent = '$' + val.toFixed(0) + ' remaining';
+    const monthsLeft = val <= 1620 ? (val <= 1818 ? '~1 month' : '~2 months') : '~3 months';
+    status.textContent = '$' + val.toFixed(0) + ' remaining — payoff target: August 2026 (' + monthsLeft + ')';
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// MONTHLY BUDGET
+// ═══════════════════════════════════════════════════════════
+
+let selectedMonth = 'june';
+
+function renderMonthPills() {
+  const container = document.getElementById('month-pills');
+  container.innerHTML = '';
+  MONTHS.forEach(m => {
+    const btn = document.createElement('button');
+    btn.className = 'pill' + (m.id === selectedMonth ? ' active' : '');
+    btn.textContent = m.label;
+    btn.onclick = () => { selectedMonth = m.id; renderMonthPills(); renderMonthBody(); };
+    container.appendChild(btn);
+  });
+}
+
+function renderMonthBody() {
+  const m = MONTHS.find(x => x.id === selectedMonth);
+  const container = document.getElementById('month-body');
+  const pd = computePaydown();
+  const computed = pd[m.id];
+  const vcStat = document.getElementById('var-cap-stat');
+  if (vcStat) vcStat.textContent = '$' + getVarTotal().toLocaleString();
+  const enabledFixed = getEnabledFixed(m);
+  const disabledFixed = m.fixed.filter(f => !enabledFixed.includes(f));
+  const fixedTotal = enabledFixed.reduce((s, x) => s + x.amount, 0);
+  const extrasTotal = (m.extras || []).reduce((s, x) => s + x.amount, 0);
+  const varTotal = getVarTotal();
+  const surplus = computed.surplus;
+
+  let phaseHtml = '';
+  if (m.phase === 'bilt') {
+    phaseHtml = `<div class="card" style="border-color:#ef444433;background:#7f1d1d11">
+      <div class="card-title" style="color:var(--red)">Target Bilt Payment</div>
+      <div style="font-size:24px;font-weight:700;color:var(--red)">$${computed.biltTarget.toLocaleString()}</div>
+      <div class="small muted mt4">Bilt balance after: <strong style="color:var(--text)">$${computed.biltAfter.toLocaleString()}</strong></div>
+      ${computed.biltAfter === 0 ? `<div class="success-box mt8"><strong>🎉 Bilt paid off this month!</strong>${computed.seed > 0 ? ` $${computed.seed.toLocaleString()} surplus seeds emergency fund.` : ''}</div>` : ''}
+    </div>`;
+  } else {
+    phaseHtml = `<div class="card" style="border-color:#3b82f633;background:#1e3a5f11">
+      <div class="card-title" style="color:var(--blue)">Emergency Fund Contribution</div>
+      <div style="font-size:24px;font-weight:700;color:var(--blue)">$${computed.emergencyTarget.toLocaleString()}</div>
+      <div class="small muted mt4">Fund balance after: <strong style="color:var(--text)">$${computed.emergencyAfter.toLocaleString()}</strong> of $5,000</div>
+      <div class="progress-wrap mt8">
+        <div class="progress-track"><div class="progress-fill" style="width:${(computed.emergencyAfter/5000*100).toFixed(0)}%;background:var(--blue)"></div></div>
+        <div class="progress-label"><span>${(computed.emergencyAfter/5000*100).toFixed(0)}% of goal</span><span>$${Math.max(0,5000-computed.emergencyAfter).toLocaleString()} to go</span></div>
+      </div>
+      ${computed.rothStart != null && computed.rothStart > 0 ? `<div class="success-box mt8"><strong>Emergency fund complete!</strong> $${computed.rothStart.toLocaleString()} surplus starts Roth IRA.</div>` : ''}
+    </div>`;
+  }
+
+  let varHtml = VARIABLE_CATS.map(cat => {
+    const cap = getVarCap(cat.id);
+    const key = `var-${m.id}-${cat.id}`;
+    const stored = localStorage.getItem(key) || '';
+    const spent = parseFloat(stored) || 0;
+    const pct = cap > 0 ? spent / cap * 100 : 0;
+    const color = pct >= 100 ? 'var(--red)' : pct >= 80 ? 'var(--yellow)' : 'var(--green)';
+    return `
+      <div class="var-row">
+        <div>
+          <div class="var-name">${cat.name}</div>
+          <div class="var-card muted">${cat.card} · ${cat.rate}</div>
+        </div>
+        <div>
+          <div class="progress-track"><div class="progress-fill" style="width:${Math.min(100,pct).toFixed(0)}%;background:${color}"></div></div>
+          <div class="progress-label"><span style="color:${color}">$${spent.toFixed(0)} spent</span><span>cap $${cap}</span></div>
+        </div>
+        <input type="number" min="0" max="${cap*3||600}" value="${stored}" placeholder="0"
+          oninput="saveVar('${key}',this.value);renderMonthBody()">
+        <div class="var-cap">/ $${cap}</div>
+      </div>`;
+  }).join('');
+
+  const varSpent = VARIABLE_CATS.reduce((s, cat) => {
+    const v = parseFloat(localStorage.getItem(`var-${m.id}-${cat.id}`)) || 0;
+    return s + v;
+  }, 0);
+  const varPct = varTotal > 0 ? varSpent / varTotal * 100 : 0;
+
+  const custNote = disabledFixed.length > 0
+    ? `<div class="info-box small">⚙ <strong>${disabledFixed.map(f => f.name).join(', ')}</strong> disabled via Customize tab (saves $${disabledFixed.reduce((s,f)=>s+f.amount,0)}/mo). <span class="restore-link" onclick="resetFixedToggles()">Re-enable all</span></div>`
+    : '';
+
+  container.innerHTML = `
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Monthly Summary</div>
+        <div class="fee-row"><span>Income</span><span class="green bold">+$${INCOME.toLocaleString()}</span></div>
+        <div class="fee-row"><span>Fixed expenses</span><span class="red">−$${fixedTotal.toLocaleString()}</span></div>
+        ${extrasTotal ? `<div class="fee-row"><span>${(m.extras||[]).map(x=>x.label).join(', ')}</span><span class="red">−$${extrasTotal.toLocaleString()}</span></div>` : ''}
+        <div class="fee-row"><span>Variable cap</span><span class="yellow">−$${varTotal.toLocaleString()}</span></div>
+        <div class="fee-row" style="border-top:2px solid var(--border);padding-top:10px;margin-top:4px">
+          <span class="bold">Available for ${m.phase === 'bilt' ? 'Bilt paydown' : 'savings'}</span>
+          <span class="bold blue" style="font-size:18px">$${surplus.toLocaleString()}</span>
+        </div>
+      </div>
+      ${phaseHtml}
+    </div>
+
+    ${m.note ? `<div class="warn-box">${m.note}</div>` : ''}
+    ${custNote}
+
+    <div class="card">
+      <div class="card-title">Fixed Expenses — $${fixedTotal.toLocaleString()}/month <span class="muted small" style="font-weight:400;text-transform:none">· adjust in ⚙ Customize tab</span></div>
+      <table>
+        <thead><tr><th>Expense</th><th>Amount</th><th>Card/Method</th></tr></thead>
+        <tbody>
+          ${enabledFixed.map(f => `<tr><td>${f.name}</td><td>$${f.amount}</td><td class="muted">${f.card}</td></tr>`).join('')}
+          ${(m.extras||[]).map(e => `<tr style="background:var(--bg)"><td>${e.label} <span class="badge badge-yellow">extra</span></td><td>$${e.amount}</td><td class="muted">—</td></tr>`).join('')}
+          <tr><td class="bold">Total</td><td class="bold">$${(fixedTotal+extrasTotal).toLocaleString()}</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Variable Spending Tracker — Cap $${varTotal.toLocaleString()} · Spent $${varSpent.toFixed(0)} (${varPct.toFixed(0)}%)</div>
+      <div class="info-box small" style="margin-bottom:12px">Enter what you've actually spent this month. Adjust caps in <span class="restore-link" onclick="document.querySelectorAll('.nav-btn')[6].click()">⚙ Customize</span>.</div>
+      <div class="progress-wrap" style="margin-bottom:12px">
+        <div class="progress-track" style="height:10px"><div class="progress-fill" style="width:${Math.min(100,varPct).toFixed(0)}%;background:${varPct>=100?'var(--red)':varPct>=80?'var(--yellow)':'var(--green)'}"></div></div>
+        <div class="progress-label"><span>Total variable: $${varSpent.toFixed(0)}</span><span>Cap: $${varTotal}</span></div>
+      </div>
+      ${varHtml}
+    </div>
+  `;
+}
+
+function saveVar(key, val) {
+  if (val) localStorage.setItem(key, val);
+  else localStorage.removeItem(key);
+}
+
+// ═══════════════════════════════════════════════════════════
+// CARD TABLE
+// ═══════════════════════════════════════════════════════════
+
+function renderCardTable() {
+  const tbody = document.getElementById('card-tbody');
+  const hidden = getSettings().hiddenCards || [];
+  tbody.innerHTML = CARD_RULES.map(r => {
+    const isHidden = hidden.includes(r.category);
+    return `<tr ${isHidden ? 'style="display:none"' : ''}>
+      <td><strong>${r.category}</strong></td>
+      <td class="muted">${r.spend}</td>
+      <td><strong>${r.card}</strong></td>
+      <td><span class="badge badge-blue">${r.rate}</span></td>
+      <td class="muted small">${r.notes}</td>
+      <td><button class="del-btn" title="Hide row" onclick="toggleCard(${JSON.stringify(r.category)},true)">×</button></td>
+    </tr>`;
+  }).join('');
+  const wrap = document.getElementById('card-restore-wrap');
+  if (wrap) wrap.style.display = hidden.length > 0 ? 'block' : 'none';
+}
+
+function filterCards() {
+  const q = document.getElementById('card-search').value.toLowerCase();
+  const rows = document.querySelectorAll('#card-tbody tr');
+  rows.forEach(row => {
+    row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+// CHECKLISTS
+// ═══════════════════════════════════════════════════════════
+
+function renderChecks() {
+  Object.entries(CHECKS).forEach(([section, items]) => {
+    const el = document.getElementById('checks-' + section);
+    el.innerHTML = items.map(item => {
+      const stored = localStorage.getItem('check-' + item.id) === '1';
+      const tagClass = section === 'urgent' ? 'tag-urgent' : section === 'soon' ? 'tag-soon' : 'tag-monthly';
+      return `
+        <div class="check-item ${stored ? 'checked' : ''}" id="ci-${item.id}">
+          <input type="checkbox" id="${item.id}" ${stored ? 'checked' : ''} onchange="toggleCheck('${item.id}')">
+          <label for="${item.id}">${item.text}</label>
+          <span class="check-tag ${tagClass}">${item.tag}</span>
+        </div>`;
+    }).join('');
+  });
+}
+
+function toggleCheck(id) {
+  const cb = document.getElementById(id);
+  localStorage.setItem('check-' + id, cb.checked ? '1' : '0');
+  document.getElementById('ci-' + id).classList.toggle('checked', cb.checked);
+}
+
+function resetChecks() {
+  if (!confirm('Reset all checkboxes?')) return;
+  Object.values(CHECKS).flat().forEach(item => {
+    localStorage.removeItem('check-' + item.id);
+  });
+  renderChecks();
+}
+
+// ═══════════════════════════════════════════════════════════
+// CUSTOMIZE TAB
+// ═══════════════════════════════════════════════════════════
+
+function renderCustomize() {
+  const s = getSettings();
+  const dis = s.disabledFixed || [];
+  const varTotal = getVarTotal();
+  const defaultVarTotal = VARIABLE_CATS.reduce((sum, c) => sum + c.cap, 0);
+  const varDiff = varTotal - defaultVarTotal;
+
+  // Variable caps
+  const varList = document.getElementById('cust-var-list');
+  if (varList) {
+    varList.innerHTML = VARIABLE_CATS.map(cat => {
+      const cur = getVarCap(cat.id);
+      const diff = cur - cat.cap;
+      const diffHtml = diff !== 0
+        ? `<span class="${diff < 0 ? 'impact-pos' : 'impact-neg'}">${diff < 0 ? '−$'+Math.abs(diff)+' saved' : '+$'+diff+' added'}</span>`
+        : `<span class="muted small">default</span>`;
+      return `<div class="cust-row">
+        <div>
+          <div style="font-size:13px;font-weight:600">${cat.name}</div>
+          <div class="muted small">${cat.card} · ${cat.rate}</div>
+        </div>
+        <div>${diffHtml}<div class="muted small">default $${cat.cap}</div></div>
+        <input type="number" min="0" max="2000" value="${cur}"
+          style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;padding:5px 8px;width:80px;outline:none"
+          oninput="setVarCap('${cat.id}',this.value)">
+        <span class="muted small">/mo</span>
+      </div>`;
+    }).join('');
+  }
+
+  const totalEl = document.getElementById('cust-var-total');
+  if (totalEl) totalEl.textContent = '$' + varTotal.toLocaleString() + '/mo';
+  const diffEl = document.getElementById('cust-var-diff');
+  if (diffEl) {
+    diffEl.textContent = varDiff === 0 ? '' : varDiff < 0
+      ? `(−$${Math.abs(varDiff)} vs default → +$${Math.abs(varDiff)} more for Bilt each month)`
+      : `(+$${varDiff} vs default → −$${varDiff} less for Bilt each month)`;
+    diffEl.className = varDiff < 0 ? 'impact-pos small' : varDiff > 0 ? 'impact-neg small' : 'muted small';
+  }
+
+  // Fixed expense toggles — unique expenses across all months
+  const fixedList = document.getElementById('cust-fixed-list');
+  if (!fixedList) return;
+  const seen = {};
+  MONTHS.forEach(m => m.fixed.forEach(f => {
+    if (!seen[f.name]) seen[f.name] = { ...f, count: 0 };
+    seen[f.name].count++;
+  }));
+
+  fixedList.innerHTML = Object.values(seen).map(f => {
+    const enabled = !dis.includes(f.name);
+    const safeId = 'fix-' + f.name.replace(/[^a-z0-9]/gi, '_');
+    return `<div class="fix-row ${enabled ? '' : 'disabled'}">
+      <input type="checkbox" id="${safeId}" ${enabled ? 'checked' : ''}
+        onchange="toggleFixed(${JSON.stringify(f.name)}, this.checked)">
+      <label for="${safeId}" style="flex:1;cursor:pointer">
+        <strong>${f.name}</strong>
+        <span class="muted small" style="margin-left:8px">$${f.amount}/mo · ${f.card}</span>
+      </label>
+      <span class="muted small">${f.count} month${f.count !== 1 ? 's' : ''}</span>
+      ${!enabled ? `<span class="impact-pos small">+$${f.amount} freed</span>` : ''}
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════
+
+try { renderBilt(); } catch(e) { console.error('renderBilt:', e); }
+try { renderMonthPills(); } catch(e) { console.error('renderMonthPills:', e); }
+try { renderMonthBody(); } catch(e) { console.error('renderMonthBody:', e); }
+try { renderCardTable(); } catch(e) { console.error('renderCardTable:', e); }
+try { renderChecks(); } catch(e) { console.error('renderChecks:', e); }
+try { renderCustomize(); } catch(e) { console.error('renderCustomize:', e); }
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+</script>
+</body>
+</html>
