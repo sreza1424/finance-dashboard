@@ -756,7 +756,7 @@
 
   <div class="card">
     <div class="card-title">Household Supplies — Costco (Monthly Average)</div>
-    <div class="info-box small mb8">Bought in bulk at Costco, amortized to monthly cost. One-person household. Not included in the $350 grocery cap — budget separately (~$40/month).</div>
+    <div class="info-box small mb8">Bought on your monthly Costco trip — charged to Citi Strata Premier (3x TYP). Tracked as a separate "Household (Costco)" variable cap ($40/month) so it doesn't eat into your $350 grocery budget.</div>
     <table>
       <thead><tr><th>Item</th><th>Package</th><th>Price</th><th>Lasts</th><th>Monthly avg</th><th>Notes</th></tr></thead>
       <tbody>
@@ -1036,6 +1036,7 @@ const VARIABLE_CATS = [
   { id: 'personal', name: 'Personal care', cap: 85, card: 'Amex Blue Biz Plus', rate: '2x MR', warning: 'Skincare + haircut.' },
   { id: 'entertainment', name: 'Entertainment', cap: 75, card: 'WF Autograph', rate: '3x WF', warning: 'Movies, books, events.' },
   { id: 'parking', name: 'Parking / Transit', cap: 90, card: 'Amex Green', rate: '3x MR', warning: 'Equinox $1/day avg (~$30/mo) + Work $5.50/day × 2.5 days/wk (~$60/mo) = ~$90/mo.' },
+  { id: 'household', name: 'Household (Costco)', cap: 40, card: 'Citi Strata Premier', rate: '3x TYP', warning: 'TP, paper towels, dish soap, laundry detergent, trash bags, cleaning supplies — amortized monthly. Bought on same Costco trip.' },
   { id: 'misc', name: 'Misc / Other', cap: 50, card: 'Amex Blue Biz Plus', rate: '2x MR', warning: 'Everything else.' },
 ];
 
@@ -1044,6 +1045,7 @@ const CARD_RULES = [
   { category: 'Dining out', spend: '$250 cap', card: 'Chase Freedom Flex', rate: '3x UR', notes: 'Pools with Sapphire Preferred → transferable to Hyatt/United.' },
   { category: 'Uber Eats / delivery', spend: '$160 cap', card: 'Freedom Flex OR Bilt', rate: '3x UR / 3x Bilt', notes: 'Route to Bilt to build Silver status (same 3x rate). Apple Card also earns 3% Daily Cash on Uber Eats — use only if you prefer instant cash over transferable points.' },
   { category: 'Groceries (in-store)', spend: '$350 cap', card: 'Citi Strata Premier', rate: '3x TYP', notes: 'Best consistent in-store supermarket card.' },
+  { category: 'Household supplies (Costco)', spend: '$40 cap', card: 'Citi Strata Premier', rate: '3x TYP', notes: 'Same Costco trip — same card. TP, paper towels, soap, detergent, trash bags, cleaning supplies.' },
   { category: 'Amazon', spend: '$150 cap', card: 'Amazon Prime Visa', rate: '5% cash', notes: 'Q2 only: Freedom Flex earns 5x UR — use that instead if chasing UR.' },
   { category: 'Internet / Comcast', spend: '$41', card: 'Chase Ink Business Preferred', rate: '3x UR', notes: 'Explicitly covers internet/cable/phone. Put on autopay.' },
   { category: 'Gas', spend: '$150', card: 'WF Autograph', rate: '3x WF', notes: 'Citi Strata Premier also 3x — both tied. No annual fee on Autograph.' },
