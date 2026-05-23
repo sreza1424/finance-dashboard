@@ -598,31 +598,10 @@
     <div class="card-title">Fee Calendar — When Fees Post</div>
     <div class="timeline">
       <div class="tl-row">
-        <div class="tl-dot red"></div>
-        <div class="tl-content">
-          <span class="tl-month">Now</span>
-          <strong>Close Ink Business Preferred 2840</strong> — dormant, saves $95 from Feb 2027
-        </div>
-      </div>
-      <div class="tl-row">
-        <div class="tl-dot yellow"></div>
-        <div class="tl-content">
-          <span class="tl-month">Feb 2027</span>
-          <span class="muted">Ink Business Preferred — $95 fee posts</span> <span class="badge badge-green">Closed already</span>
-        </div>
-      </div>
-      <div class="tl-row">
         <div class="tl-dot blue"></div>
         <div class="tl-content">
           <span class="tl-month">Mar 4 2027</span>
           <strong>Bilt $495 annual fee</strong> — set aside $82/month Oct–Feb to cover this
-        </div>
-      </div>
-      <div class="tl-row">
-        <div class="tl-dot red"></div>
-        <div class="tl-content">
-          <span class="tl-month">Apr 2027</span>
-          <strong>Close United Business 9642 before this date</strong> — saves $150/yr. United Gateway handles all United needs free.
         </div>
       </div>
       <div class="tl-row">
@@ -699,45 +678,6 @@
       <div class="warn-box small mt8">
         Amazon variable cap ($150) is nearly consumed: longevity mix $98 + toothpaste $18 avg + collagen $23 avg + creatine $7 avg = <strong>$146/month</strong>. Almost no room for discretionary Amazon purchases.
       </div>
-    </div>
-  </div>
-
-  <div class="card" style="border-color:#f59e0b44">
-    <div class="card-title" style="color:var(--yellow)">Same-Day Costco Delivery — Cost Analysis</div>
-    <div class="warn-box small" style="margin-bottom:14px"><strong>Bottom line: Full monthly haul via delivery = $380 — $30 over your $350 cap.</strong> Delivery works for a reduced "essentials only" order. See options below.</div>
-
-    <div class="grid-2" style="margin-bottom:14px">
-      <div>
-        <div class="muted small" style="margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;font-weight:600">Full Cart In-Store</div>
-        <div class="fee-row"><span>Items</span><span>$229</span></div>
-        <div class="fee-row"><span>Delivery fee</span><span class="green">$0</span></div>
-        <div class="fee-row"><span>Service fee</span><span class="green">$0</span></div>
-        <div class="fee-row"><span>Tip</span><span class="green">$0</span></div>
-        <div class="fee-row" style="border-top:1px solid var(--border);padding-top:8px;margin-top:4px"><span class="bold">Total</span><span class="green bold">$229</span></div>
-      </div>
-      <div>
-        <div class="muted small" style="margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;font-weight:600">Full Cart via sameday.costco.com</div>
-        <div class="fee-row"><span>Items (+13.5% markup)</span><span class="yellow">$260</span></div>
-        <div class="fee-row"><span>Delivery fee (waived $75+)</span><span class="green">$0</span></div>
-        <div class="fee-row"><span>Service fee (~10%)</span><span class="yellow">$26</span></div>
-        <div class="fee-row"><span>Tip (~15%)</span><span class="yellow">$39</span></div>
-        <div class="fee-row" style="border-top:1px solid var(--border);padding-top:8px;margin-top:4px"><span class="bold">Total</span><span class="red bold">$325</span></div>
-        <div class="muted small mt4">$325 Costco + $55 Safeway = $380 → over $350 cap</div>
-      </div>
-    </div>
-
-    <div class="card-title" style="margin-top:4px">Viable Same-Day Options</div>
-    <table>
-      <thead><tr><th>Option</th><th>All-in Cost</th><th>vs Cap</th><th>When to use</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Reduced order — non-perishables only</strong><br><span class="muted small">Skip meats/eggs (buy at Safeway). Order only: Oikos, coconut milk, rice, tortillas, avocado oil, PB, coffee, protein bars, frozen veggies, fruit (~$103 in items)</span></td><td class="yellow">~$142</td><td class="green bold">$142 + $55 = $197 ✓</td><td>When you can't get to Costco but need bulk pantry items</td></tr>
-        <tr><td><strong>Protein-only order</strong><br><span class="muted small">Chicken thighs, ground turkey, beef, eggs, protein bars only (~$90 in items). Everything else from Safeway.</span></td><td class="yellow">~$125</td><td class="green bold">$125 + $55 = $180 ✓</td><td>When you're low on protein and want fresh delivery</td></tr>
-        <tr><td><strong>Upgrade to Executive ($130/yr)?</strong><br><span class="muted small">Executive gives 2% annual reward (~$50–80/yr on your spend) + $10/month delivery credit on sameday.costco.com. Breakeven vs Gold Star at ~$2,500/yr Costco spend.</span></td><td class="muted">$65 upgrade</td><td class="green">Pays off if you spend $2,500+/yr at Costco</td><td>Worth considering if you go in-store monthly</td></tr>
-      </tbody>
-    </table>
-
-    <div class="info-box small mt8">
-      <strong>Best practice:</strong> Do the full Costco haul in-store once a month. Reserve same-day delivery for months when you genuinely can't go in — and when you do, order only pantry staples or proteins, not the full cart. Always use <strong>sameday.costco.com</strong> (Gold Star membership gets you the ~13% member markup) rather than the Instacart app directly (~24% markup without a linked membership). No monthly delivery credits with Gold Star — every delivery dollar counts, so keep orders lean.
     </div>
   </div>
 
@@ -1211,15 +1151,13 @@ const CARD_RULES = [
 
 const CHECKS = {
   urgent: [
-    { id: 'close-ink', text: 'Close Chase Ink Business Preferred (2840) — dormant, saves $95 from Feb 2027. Call 1-800-432-3117 or do it via Chase.com → Account Services.', tag: 'Do now' },
     { id: 'activate-q2', text: 'Activate Freedom Flex Q2 bonus at chase.com/freedom — 5x UR on Amazon + Chase Travel through June 30.', tag: 'Do now' },
     { id: 'bilt-15th', text: 'Send any checking surplus to Bilt on the 15th of this month.', tag: 'This month' },
     { id: 'bilt-lastday', text: 'Send any remaining checking surplus to Bilt on the last day of this month.', tag: 'This month' },
     { id: 'dining-cap', text: 'Set a $250/month dining budget alert in your bank app. You averaged $571 — this is the single biggest lever.', tag: 'Do now' },
   ],
   soon: [
-    { id: 'venture-x', text: 'Decide on Venture X before the next annual fee posts ($395). Keep if you use the $300 Capital One Travel credit — it\'s fee-positive. Cancel 60+ days before fee date.', tag: 'Before fee' },
-    { id: 'close-united', text: 'Close Chase United Business (9642) before April 2027 — $150 fee, United Gateway (free) covers all United needs.', tag: 'Before Apr 2027' },
+    { id: 'venture-x', text: 'Decide on Venture X before the next annual fee posts ($395). Keep if you use the $300 Capital One Travel credit — it\'s fee-positive.', tag: 'Before fee' },
     { id: 'bilt-reserve', text: 'Starting October 2026, set aside $82/month for Bilt\'s $495 March 2027 annual fee. Transfer to a separate savings account.', tag: 'Oct 2026' },
     { id: 'bofa-category', text: 'Log into BofA app → Rewards → set your 3% category to "Online Shopping" for BofA Cash Rewards card.', tag: 'Soon' },
   ],
@@ -1234,7 +1172,6 @@ const CHECKS = {
   future: [
     { id: 'jan-2027', text: 'January 2027: Roth IRA in full swing — $583/month toward $7,000/year limit. Route to Fidelity or Vanguard target-date fund.', tag: '2027' },
     { id: 'jan-2028', text: 'January 2028: Affirm Plan A ends — $184/month freed. Increase Roth IRA or taxable brokerage.', tag: '2028' },
-    { id: 'amex-green', text: 'Never close the Amex Green — oldest card (credit age), CLEAR credit ($209) exceeds the $150 fee every year.', tag: 'Permanent' },
     { id: 'aa-cards', text: 'Evaluate Citi AAdvantage + CitiBusiness AAdvantage ($198/yr combined) — only worth keeping if you fly AA 2–3 round trips/year.', tag: 'Assess annually' },
   ],
 };
