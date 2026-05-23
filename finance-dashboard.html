@@ -230,6 +230,23 @@
   .groc-add-row { background: none; border: 1px dashed var(--border); border-radius: 6px; color: var(--muted); cursor: pointer; font-size: 12px; margin-top: 8px; padding: 6px 14px; width: 100%; transition: all 0.15s; }
   .groc-add-row:hover { border-color: var(--blue); color: var(--blue); }
     .cust-row > span:last-child  { grid-column: 3; grid-row: 1 / 3; align-self: center; }
+
+    /* Grocery tables: hide Package/Price/Qty/Notes cols, keep Item + Monthly $ + Delete */
+    .groc-table th:nth-child(2), .groc-table th:nth-child(3),
+    .groc-table th:nth-child(4), .groc-table th:nth-child(6),
+    .groc-table td:nth-child(2), .groc-table td:nth-child(3),
+    .groc-table td:nth-child(4), .groc-table td:nth-child(6) { display: none; }
+
+    /* Grocery inputs: prevent iOS zoom (must be ≥16px) */
+    .groc-input, .groc-cost { font-size: 16px !important; }
+    .groc-cost { width: 72px; }
+    /* Subtotal footer: colspan shrinks from 4→1 when 3 cols hidden */
+    .groc-tfoot-label { display: table-cell !important; }
+    .groc-table tfoot td:nth-child(2), .groc-table tfoot td:nth-child(3) { display: none; }
+
+    /* Prevent any element from pushing past viewport width */
+    .card { overflow-x: hidden; }
+    [style*="width:90px"], [style*="width: 90px"] { width: 100% !important; }
   }
 </style>
 </head>
@@ -730,10 +747,10 @@
       <button class="btn" onclick="resetGroceryStore('costco')" style="font-size:11px;padding:4px 10px">Reset defaults</button>
     </div>
     <div style="overflow-x:auto">
-      <table>
+      <table class="groc-table">
         <thead><tr><th>Item</th><th>Package</th><th>Price</th><th>Qty/Month</th><th>Monthly $</th><th>Notes</th><th style="width:24px"></th></tr></thead>
         <tbody id="groc-tbody-costco"></tbody>
-        <tfoot><tr style="background:var(--surface2)"><td colspan="4"><strong>Costco Subtotal</strong></td><td class="bold" style="font-size:15px" id="groc-costco-total">—</td><td colspan="2"></td></tr></tfoot>
+        <tfoot><tr style="background:var(--surface2)"><td colspan="4" class="groc-tfoot-label"><strong>Costco Subtotal</strong></td><td class="bold" style="font-size:15px" id="groc-costco-total">—</td><td colspan="2"></td></tr></tfoot>
       </table>
     </div>
     <button class="groc-add-row" onclick="addGrocItem('costco')">+ Add item</button>
@@ -746,10 +763,10 @@
     </div>
     <div class="info-box small mb8">Pick up fresh garlic, ginger, onion, limes as needed.</div>
     <div style="overflow-x:auto">
-      <table>
+      <table class="groc-table">
         <thead><tr><th>Item</th><th>Package</th><th>Price</th><th>Qty/Month</th><th>Monthly $</th><th>Notes</th><th style="width:24px"></th></tr></thead>
         <tbody id="groc-tbody-safeway"></tbody>
-        <tfoot><tr style="background:var(--surface2)"><td colspan="4"><strong>Safeway Subtotal</strong></td><td class="bold" style="font-size:15px" id="groc-safeway-total">—</td><td colspan="2"></td></tr></tfoot>
+        <tfoot><tr style="background:var(--surface2)"><td colspan="4" class="groc-tfoot-label"><strong>Safeway Subtotal</strong></td><td class="bold" style="font-size:15px" id="groc-safeway-total">—</td><td colspan="2"></td></tr></tfoot>
       </table>
     </div>
     <button class="groc-add-row" onclick="addGrocItem('safeway')">+ Add item</button>
@@ -762,10 +779,10 @@
     </div>
     <div class="info-box small mb8">Bought on your monthly Costco trip — Citi Strata Premier (3x TYP). Tracked separately from the $350 grocery cap.</div>
     <div style="overflow-x:auto">
-      <table>
+      <table class="groc-table">
         <thead><tr><th>Item</th><th>Package</th><th>Price</th><th>Qty/Period</th><th>Monthly $</th><th>Notes</th><th style="width:24px"></th></tr></thead>
         <tbody id="groc-tbody-household"></tbody>
-        <tfoot><tr style="background:var(--surface2)"><td colspan="4"><strong>Household Subtotal</strong></td><td class="bold" style="font-size:15px" id="groc-household-total">—</td><td colspan="2"></td></tr></tfoot>
+        <tfoot><tr style="background:var(--surface2)"><td colspan="4" class="groc-tfoot-label"><strong>Household Subtotal</strong></td><td class="bold" style="font-size:15px" id="groc-household-total">—</td><td colspan="2"></td></tr></tfoot>
       </table>
     </div>
     <button class="groc-add-row" onclick="addGrocItem('household')">+ Add item</button>
