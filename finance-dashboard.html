@@ -217,6 +217,18 @@
     .cust-row > div:first-child  { grid-column: 1; grid-row: 1; }
     .cust-row > div:nth-child(2) { grid-column: 1; grid-row: 2; }
     .cust-row input[type=number] { grid-column: 2; grid-row: 1 / 3; align-self: center; width: 64px !important; }
+
+  /* ─── Grocery inline editing ─────────────────────────────── */
+  .groc-input { background: transparent; border: 1px solid transparent; border-radius: 4px; color: var(--text); font-family: inherit; font-size: 13px; padding: 2px 5px; width: 100%; min-width: 40px; }
+  .groc-input:hover { border-color: var(--border); }
+  .groc-input:focus { background: var(--surface2); border-color: var(--blue); outline: none; }
+  .groc-cost { background: transparent; border: 1px solid transparent; border-radius: 4px; color: var(--green); font-family: inherit; font-size: 13px; font-weight: 700; padding: 2px 4px; text-align: right; width: 60px; }
+  .groc-cost:hover { border-color: var(--border); }
+  .groc-cost:focus { background: var(--surface2); border-color: var(--blue); outline: none; }
+  .groc-del { background: none; border: none; color: var(--red); cursor: pointer; font-size: 17px; line-height: 1; opacity: 0.25; padding: 0 3px; transition: opacity 0.15s; }
+  .groc-del:hover { opacity: 1; }
+  .groc-add-row { background: none; border: 1px dashed var(--border); border-radius: 6px; color: var(--muted); cursor: pointer; font-size: 12px; margin-top: 8px; padding: 6px 14px; width: 100%; transition: all 0.15s; }
+  .groc-add-row:hover { border-color: var(--blue); color: var(--blue); }
     .cust-row > span:last-child  { grid-column: 3; grid-row: 1 / 3; align-self: center; }
   }
 </style>
@@ -660,15 +672,13 @@
     </div>
     <div class="card">
       <div class="card-title">Monthly Budget vs $350 Target</div>
-      <div class="fee-row"><span>Costco (one trip/month, in-store)</span><span class="bold">~$229</span></div>
-      <div class="fee-row"><span>Safeway (ongoing weekly)</span><span class="bold">~$55</span></div>
+      <div class="fee-row"><span>Costco (one trip/month, in-store)</span><span class="bold" id="groc-costco-sum">—</span></div>
+      <div class="fee-row"><span>Safeway (ongoing weekly)</span><span class="bold" id="groc-safeway-sum">—</span></div>
       <div class="fee-row" style="border-top:2px solid var(--border);padding-top:10px;margin-top:4px">
-        <span class="bold">Total grocery (in-store)</span><span class="green bold" style="font-size:18px">~$284</span>
+        <span class="bold">Total grocery (in-store)</span><span id="groc-combined" class="green bold" style="font-size:18px">—</span>
       </div>
       <div class="fee-row"><span class="muted">Budget cap</span><span class="muted">$350</span></div>
-      <div class="success-box small mt8">
-        Under budget by ~$66. Protein bars moved to Costco Kirkland brand — saves ~$40/month vs Barebells. Fairlife protein shakes (42g) are on Amazon — excluded from grocery budget.
-      </div>
+      <div id="groc-budget-note" class="success-box small mt8">Fairlife protein shakes (42g) on Amazon — excluded from grocery budget.</div>
       <div class="warn-box small mt8">
         Amazon variable cap ($150) is nearly consumed: longevity mix $98 + toothpaste $18 avg + collagen $23 avg + creatine $7 avg = <strong>$146/month</strong>. Almost no room for discretionary Amazon purchases.
       </div>
@@ -715,64 +725,51 @@
   </div>
 
   <div class="card">
-    <div class="card-title">Costco Shopping List — One Trip Per Month</div>
-    <table>
-      <thead><tr><th>Item</th><th>Package</th><th>Price</th><th>Qty/Month</th><th>Monthly Cost</th><th>Notes</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Boneless skinless chicken thighs</strong></td><td>~7 lb pack</td><td>$2.99/lb</td><td>9.4 lbs</td><td class="green bold">$28</td><td>Buy 1–2 packs, freeze half</td></tr>
-        <tr><td><strong>90/93% lean ground beef</strong></td><td>10 lb pack</td><td>$3.29/lb</td><td>3.75 lbs</td><td class="green bold">$12</td><td>Kirkland; use closest lean available</td></tr>
-        <tr><td><strong>93% ground turkey</strong></td><td>~6.8 lb pack</td><td>$2.59/lb</td><td>3.75 lbs</td><td class="green bold">$10</td><td>Jennie-O or Butterball</td></tr>
-        <tr><td><strong>Organic free-range eggs</strong></td><td>24-count</td><td>$8.59/24ct</td><td>90 eggs (~4 packs)</td><td class="green bold">$34</td><td>Buy 4 × 24-ct packs</td></tr>
-        <tr><td><strong>Oikos Triple Zero</strong></td><td>18 × 5.3oz cups</td><td>$13.49/18-pk</td><td>30 cups (2 packs)</td><td class="green bold">$27</td><td>$0.75/cup vs $1.30 at Safeway — always buy at Costco</td></tr>
-        <tr><td><strong>Lite coconut milk</strong></td><td>6-pack × 13.66oz</td><td>$6.97/6-pk</td><td>~4 cans (1 pack/6 wks)</td><td class="green bold">$5</td><td>Thai Kitchen organic; ~1 can/week — buy 1 pack, lasts 6 weeks</td></tr>
-        <tr><td><strong>Jasmine rice</strong></td><td>25 lb bag</td><td>$21.49/bag</td><td>½ bag</td><td class="green bold">$11</td><td>1 bag lasts 2 months</td></tr>
-        <tr><td><strong>Flour tortillas (10")</strong></td><td>2 × 15-count</td><td>$11.99/pack</td><td>1 pack (~30)</td><td class="green bold">$12</td><td>Mission; 1/day for breakfast + lunch wraps</td></tr>
-        <tr><td><strong>Avocado oil</strong></td><td>2L bottle</td><td>$21.99/bottle</td><td>½ bottle</td><td class="green bold">$11</td><td>Chosen Foods; lasts ~2 months</td></tr>
-        <tr><td><strong>Natural peanut butter</strong></td><td>2 × 28oz</td><td>$9.79/2-pack</td><td>½ pack</td><td class="green bold">$5</td><td>Kirkland Organic or Santa Cruz — ingredients must be peanuts + salt only; check label</td></tr>
-        <tr><td><strong>Folgers coffee</strong></td><td>43.5oz can</td><td>$14.99/can</td><td>½ can</td><td class="green bold">$8</td><td>1 can lasts ~6–8 weeks</td></tr>
-        <tr><td><strong>Navel oranges</strong></td><td>8 lb bag</td><td>$6.29/bag</td><td>1 bag (~30 oranges)</td><td class="green bold">$6</td><td>1 orange/day</td></tr>
-        <tr><td><strong>Bananas</strong></td><td>3 lb bag</td><td>$1.49/bag</td><td>4 bags</td><td class="green bold">$6</td><td>1–2 bananas/day; buy in 2 trips if ripening too fast</td></tr>
-        <tr><td><strong>Sesame oil</strong></td><td>33.8oz bottle</td><td>$11.59/bottle</td><td>¼ bottle</td><td class="green bold">$3</td><td>Bibigo; lasts 4+ months</td></tr>
-        <tr><td><strong>Frozen broccoli florets</strong></td><td>4 lb bag</td><td>$7.99/bag</td><td>1 bag</td><td class="green bold">$8</td><td>Roast from frozen at 425°F, 25–30 min with avocado oil + salt; no thawing needed</td></tr>
-        <tr><td><strong>Frozen cauliflower</strong></td><td>4 lb bag</td><td>$6.99/bag</td><td>½ bag</td><td class="green bold">$4</td><td>Alternate roasting veggie; rotate with broccoli or roast both together</td></tr>
-        <tr><td><strong>Kirkland protein bars</strong></td><td>20-count box</td><td>$27.99/box</td><td>~1.5 boxes (30 bars)</td><td class="green bold">$43</td><td>21g protein each; ~$1.40/bar vs ~$2.75/bar Barebells — saves ~$40/month</td></tr>
-        <tr style="background:var(--surface2)"><td colspan="4"><strong>Costco Subtotal</strong></td><td class="bold" style="font-size:15px">~$229</td><td></td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="card">
-    <div class="card-title">Safeway Shopping List — Weekly / Ongoing</div>
-    <div class="info-box small mb8">Fairlife milk lasts 1+ week — buy weekly. Pick up fresh garlic, ginger, onion, limes as needed.</div>
-    <table>
-      <thead><tr><th>Item</th><th>Size</th><th>Price</th><th>Qty/Month</th><th>Monthly Cost</th><th>Notes</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Fairlife milk (for coffee)</strong></td><td>52oz bottle</td><td>~$5.50/bottle</td><td>3–4 bottles</td><td class="green bold">$20</td><td>Lasts 1+ week; use in coffee daily</td></tr>
-        <tr><td><strong>Fresh garlic, ginger, onion</strong></td><td>weekly top-up</td><td>~$8–10/week</td><td>4 weeks</td><td class="green bold">$35</td><td>Core spice base for all cooking; buy fresh weekly</td></tr>
-        <tr style="background:var(--surface2)"><td colspan="4"><strong>Safeway Subtotal</strong></td><td class="bold" style="font-size:15px">~$55</td><td></td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="card">
-    <div class="card-title">Household Supplies — Costco (Monthly Average)</div>
-    <div class="info-box small mb8">Bought on your monthly Costco trip — charged to Citi Strata Premier (3x TYP). Tracked as a separate "Household (Costco)" variable cap ($40/month) so it doesn't eat into your $350 grocery budget.</div>
-    <table>
-      <thead><tr><th>Item</th><th>Package</th><th>Price</th><th>Lasts</th><th>Monthly avg</th><th>Notes</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Kirkland bath tissue</strong></td><td>30-roll</td><td>$22.99</td><td>~2.5 months</td><td class="green bold">$9</td><td>Kirkland 2-ply; always in stock</td></tr>
-        <tr><td><strong>Kirkland paper towels</strong></td><td>12-roll</td><td>$24.99</td><td>~2 months</td><td class="green bold">$12</td><td>Strong, good for kitchen + cleaning</td></tr>
-        <tr><td><strong>Kirkland dish soap</strong></td><td>90oz</td><td>$9.99</td><td>~4 months</td><td class="green bold">$3</td><td>Or Dawn 3-pack (~$12, similar value)</td></tr>
-        <tr><td><strong>Laundry detergent</strong></td><td>194oz</td><td>$21.99</td><td>~4 months</td><td class="green bold">$5</td><td>Kirkland Ultra Clean or Tide Original</td></tr>
-        <tr><td><strong>13-gal trash bags</strong></td><td>200-count</td><td>$19.99</td><td>~5 months</td><td class="green bold">$4</td><td>Kirkland; fits standard kitchen can</td></tr>
-        <tr><td><strong>All-purpose cleaner</strong></td><td>2 × 32oz</td><td>$11.99</td><td>~4 months</td><td class="green bold">$3</td><td>Kirkland or Windex multi-surface 2-pack</td></tr>
-        <tr><td><strong>Food storage / Ziploc bags</strong></td><td>variety pack</td><td>$14.99</td><td>~4 months</td><td class="green bold">$4</td><td>Costco Ziploc variety; quart + gallon sizes</td></tr>
-        <tr style="background:var(--surface2)"><td colspan="4"><strong>Household Subtotal</strong></td><td class="bold" style="font-size:15px">~$40</td><td></td></tr>
-      </tbody>
-    </table>
-    <div class="info-box small mt8">
-      <strong>Buying cadence:</strong> Most items are bought every 2–5 months — not every Costco trip. On a typical monthly Costco run you might only grab 1–2 of these. Budget ~$40/month as a reserve and spend it when the item runs out.
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <div class="card-title" style="margin:0">Costco Shopping List — One Trip Per Month</div>
+      <button class="btn" onclick="resetGroceryStore('costco')" style="font-size:11px;padding:4px 10px">Reset defaults</button>
     </div>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>Item</th><th>Package</th><th>Price</th><th>Qty/Month</th><th>Monthly $</th><th>Notes</th><th style="width:24px"></th></tr></thead>
+        <tbody id="groc-tbody-costco"></tbody>
+        <tfoot><tr style="background:var(--surface2)"><td colspan="4"><strong>Costco Subtotal</strong></td><td class="bold" style="font-size:15px" id="groc-costco-total">—</td><td colspan="2"></td></tr></tfoot>
+      </table>
+    </div>
+    <button class="groc-add-row" onclick="addGrocItem('costco')">+ Add item</button>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <div class="card-title" style="margin:0">Safeway Shopping List — Weekly / Ongoing</div>
+      <button class="btn" onclick="resetGroceryStore('safeway')" style="font-size:11px;padding:4px 10px">Reset defaults</button>
+    </div>
+    <div class="info-box small mb8">Pick up fresh garlic, ginger, onion, limes as needed.</div>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>Item</th><th>Package</th><th>Price</th><th>Qty/Month</th><th>Monthly $</th><th>Notes</th><th style="width:24px"></th></tr></thead>
+        <tbody id="groc-tbody-safeway"></tbody>
+        <tfoot><tr style="background:var(--surface2)"><td colspan="4"><strong>Safeway Subtotal</strong></td><td class="bold" style="font-size:15px" id="groc-safeway-total">—</td><td colspan="2"></td></tr></tfoot>
+      </table>
+    </div>
+    <button class="groc-add-row" onclick="addGrocItem('safeway')">+ Add item</button>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <div class="card-title" style="margin:0">Household Supplies — Costco (Monthly Average)</div>
+      <button class="btn" onclick="resetGroceryStore('household')" style="font-size:11px;padding:4px 10px">Reset defaults</button>
+    </div>
+    <div class="info-box small mb8">Bought on your monthly Costco trip — Citi Strata Premier (3x TYP). Tracked separately from the $350 grocery cap.</div>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>Item</th><th>Package</th><th>Price</th><th>Qty/Period</th><th>Monthly $</th><th>Notes</th><th style="width:24px"></th></tr></thead>
+        <tbody id="groc-tbody-household"></tbody>
+        <tfoot><tr style="background:var(--surface2)"><td colspan="4"><strong>Household Subtotal</strong></td><td class="bold" style="font-size:15px" id="groc-household-total">—</td><td colspan="2"></td></tr></tfoot>
+      </table>
+    </div>
+    <button class="groc-add-row" onclick="addGrocItem('household')">+ Add item</button>
+    <div class="info-box small mt8"><strong>Buying cadence:</strong> Most items are bought every 2–5 months — not every Costco trip. Budget ~$40/month as a reserve and spend it when the item runs out.</div>
   </div>
 
   <div class="card">
@@ -1025,6 +1022,136 @@ const MONTHS = [
     note: '🎉 Emergency fund hits $5,000! Remaining $1,352 starts Roth IRA this month.',
   },
 ];
+
+// ═══════════════════════════════════════════════════════════
+// GROCERY ITEMS — dynamic, editable, localStorage-backed
+// ═══════════════════════════════════════════════════════════
+const DEFAULT_GROCERY_ITEMS = {
+  costco: [
+    { name: 'Boneless skinless chicken thighs', pkg: '~9.8 lb pack', price: '$2.88/lb', qty: '9.8 lbs', monthly: 28, notes: 'Buy 1–2 packs, freeze half' },
+    { name: '93% lean ground beef', pkg: '~4 lb pack', price: '$25.99/pack', qty: '1 pack', monthly: 26, notes: '93% lean Kirkland' },
+    { name: '93% ground turkey', pkg: '~6.8 lb pack', price: '$25.99/pack', qty: '1 pack', monthly: 26, notes: 'Jennie-O or Butterball' },
+    { name: 'Organic free-range eggs', pkg: '24-count', price: '$7.69/24ct', qty: '4 packs (~96 eggs)', monthly: 31, notes: 'Buy 4 × 24-ct packs; $3.85/dozen' },
+    { name: 'Oikos Triple Zero', pkg: '18 × 5.3oz cups', price: '$9.49/pack*', qty: '2 packs (36 cups)', monthly: 19, notes: '$9.49 after $4.50 instant savings' },
+    { name: 'Kirkland protein bars', pkg: '12-bar pack', price: '$23.69/pack', qty: '2 packs (variety + regular)', monthly: 46, notes: '~20g protein each' },
+    { name: 'Flour tortillas (10")', pkg: '15-count per pack', price: '$6.99/pack', qty: '2 packs', monthly: 14, notes: '1/day for breakfast + lunch wraps' },
+    { name: 'Avocado oil spray', pkg: '2 spray cans', price: '$10.29 after savings', qty: '1 set / 2 months', monthly: 5, notes: 'Cooking spray for breakfast; lasts ~2 months' },
+    { name: 'Fairlife ultra filtered milk', pkg: '3-pack 52oz', price: '$11.99/3-pack', qty: '1 set / 2 months', monthly: 6, notes: 'For coffee; 3 packs lasts ~2 months' },
+    { name: 'Lite coconut milk', pkg: '6-pack × 13.66oz', price: '$6.97/6-pk', qty: '~4 cans/month', monthly: 5, notes: '~1 can/week' },
+    { name: 'Jasmine rice', pkg: '25 lb bag', price: '$21.49/bag', qty: '½ bag/month', monthly: 11, notes: '1 bag lasts 2 months' },
+    { name: 'Natural peanut butter', pkg: '2 × 28oz', price: '$9.79/2-pack', qty: '½ pack/month', monthly: 5, notes: 'Peanuts + salt only; check label' },
+    { name: 'Folgers coffee', pkg: '43.5oz can', price: '$14.99/can', qty: '½ can/month', monthly: 8, notes: '1 can lasts ~6–8 weeks' },
+    { name: 'Navel oranges', pkg: '8 lb bag', price: '$6.29/bag', qty: '1 bag (~30 oranges)', monthly: 6, notes: '1 orange/day' },
+    { name: 'Bananas', pkg: '3 lb bag', price: '$1.49/bag', qty: '4 bags', monthly: 6, notes: '1–2 bananas/day' },
+    { name: 'Organic broccoli', pkg: 'fresh bag', price: '$9.39/bag', qty: '1 bag', monthly: 9, notes: 'KS Organic fresh' },
+    { name: 'Frozen cauliflower', pkg: '4 lb bag', price: '$6.99/bag', qty: '½ bag', monthly: 4, notes: 'Roast with avocado oil + salt' },
+    { name: 'Sesame oil', pkg: '33.8oz bottle', price: '$11.59/bottle', qty: '¼ bottle', monthly: 3, notes: 'Bibigo; lasts 4+ months' },
+  ],
+  safeway: [
+    { name: 'Fresh garlic, ginger, onion', pkg: 'weekly top-up', price: '~$8–10/week', qty: '4 weeks', monthly: 35, notes: 'Core spice base; buy fresh weekly' },
+  ],
+  household: [
+    { name: 'Kirkland bath tissue', pkg: '30-roll', price: '$22.99', qty: 'every 2.5 mo', monthly: 9, notes: 'Kirkland 2-ply' },
+    { name: 'Kirkland paper towels', pkg: '12-roll', price: '$24.99', qty: 'every 2 mo', monthly: 12, notes: 'Good for kitchen + cleaning' },
+    { name: 'Kirkland dish soap', pkg: '90oz', price: '$9.99', qty: 'every 4 mo', monthly: 3, notes: 'Or Dawn 3-pack (~$12)' },
+    { name: 'Laundry detergent', pkg: '194oz', price: '$21.99', qty: 'every 4 mo', monthly: 5, notes: 'Kirkland Ultra Clean or Tide' },
+    { name: '13-gal trash bags', pkg: '200-count', price: '$19.99', qty: 'every 5 mo', monthly: 4, notes: 'Kirkland; fits standard kitchen can' },
+    { name: 'All-purpose cleaner', pkg: '2 × 32oz', price: '$11.99', qty: 'every 4 mo', monthly: 3, notes: 'Windex multi-surface 2-pack' },
+    { name: 'Food storage / Ziploc bags', pkg: 'variety pack', price: '$14.99', qty: 'every 4 mo', monthly: 4, notes: 'Quart + gallon sizes' },
+  ]
+};
+
+function getGroceryItems() {
+  try { const s = localStorage.getItem('fin-grocery'); if (s) return JSON.parse(s); } catch(e) {}
+  return JSON.parse(JSON.stringify(DEFAULT_GROCERY_ITEMS));
+}
+function saveGroceryItems(items) { localStorage.setItem('fin-grocery', JSON.stringify(items)); }
+function grocTotal(arr) { return arr.reduce((s, i) => s + (parseFloat(i.monthly) || 0), 0); }
+function escG(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function renderGroceryTable(store) {
+  const tbody = document.getElementById('groc-tbody-' + store);
+  if (!tbody) return;
+  const rows = getGroceryItems()[store];
+  tbody.innerHTML = rows.map((item, idx) => `
+    <tr>
+      <td><input class="groc-input" value="${escG(item.name)}" onchange="updateGrocField('${store}',${idx},'name',this.value)" placeholder="Item name"></td>
+      <td><input class="groc-input" value="${escG(item.pkg)}" onchange="updateGrocField('${store}',${idx},'pkg',this.value)" placeholder="Package" style="width:90px"></td>
+      <td><input class="groc-input" value="${escG(item.price)}" onchange="updateGrocField('${store}',${idx},'price',this.value)" placeholder="Price" style="width:90px"></td>
+      <td><input class="groc-input" value="${escG(item.qty)}" onchange="updateGrocField('${store}',${idx},'qty',this.value)" placeholder="Qty" style="width:80px"></td>
+      <td style="white-space:nowrap"><span style="color:var(--muted);font-size:11px">$</span><input type="number" class="groc-cost" value="${item.monthly||0}" min="0" step="1" oninput="updateGrocField('${store}',${idx},'monthly',parseFloat(this.value)||0)"></td>
+      <td><input class="groc-input" value="${escG(item.notes)}" onchange="updateGrocField('${store}',${idx},'notes',this.value)" placeholder="Notes"></td>
+      <td><button class="groc-del" onclick="deleteGrocItem('${store}',${idx})" title="Delete row">×</button></td>
+    </tr>`).join('');
+}
+
+function renderAllGroceryTables() {
+  ['costco','safeway','household'].forEach(s => renderGroceryTable(s));
+  updateGrocTotals();
+}
+
+function updateGrocField(store, idx, field, value) {
+  const items = getGroceryItems();
+  items[store][idx][field] = field === 'monthly' ? (parseFloat(value) || 0) : value;
+  saveGroceryItems(items);
+  updateGrocTotals();
+}
+
+function deleteGrocItem(store, idx) {
+  const items = getGroceryItems();
+  items[store].splice(idx, 1);
+  saveGroceryItems(items);
+  renderGroceryTable(store);
+  updateGrocTotals();
+}
+
+function addGrocItem(store) {
+  const items = getGroceryItems();
+  items[store].push({ name: 'New item', pkg: '', price: '', qty: '', monthly: 0, notes: '' });
+  saveGroceryItems(items);
+  renderGroceryTable(store);
+  updateGrocTotals();
+  const tbody = document.getElementById('groc-tbody-' + store);
+  if (tbody) { const r = tbody.lastElementChild; if (r) r.querySelector('input').focus(); }
+}
+
+function resetGroceryStore(store) {
+  if (!confirm('Reset ' + store + ' items to defaults? Your changes will be lost.')) return;
+  const items = getGroceryItems();
+  items[store] = JSON.parse(JSON.stringify(DEFAULT_GROCERY_ITEMS[store]));
+  saveGroceryItems(items);
+  renderGroceryTable(store);
+  updateGrocTotals();
+}
+
+function updateGrocTotals() {
+  const items = getGroceryItems();
+  const ct = grocTotal(items.costco);
+  const st = grocTotal(items.safeway);
+  const ht = grocTotal(items.household);
+  const combined = ct + st;
+  const el = id => document.getElementById(id);
+  if (el('groc-costco-total'))   el('groc-costco-total').textContent   = '~$' + Math.round(ct);
+  if (el('groc-safeway-total'))  el('groc-safeway-total').textContent  = '~$' + Math.round(st);
+  if (el('groc-household-total'))el('groc-household-total').textContent= '~$' + Math.round(ht);
+  if (el('groc-costco-sum'))     el('groc-costco-sum').textContent     = '~$' + Math.round(ct);
+  if (el('groc-safeway-sum'))    el('groc-safeway-sum').textContent    = '~$' + Math.round(st);
+  if (el('groc-combined')) {
+    el('groc-combined').textContent = '~$' + Math.round(combined);
+    el('groc-combined').style.color = combined > 350 ? 'var(--red)' : 'var(--green)';
+  }
+  const note = el('groc-budget-note');
+  if (note) {
+    const diff = 350 - combined;
+    if (diff >= 0) {
+      note.className = 'success-box small mt8';
+      note.textContent = 'Under budget by ~$' + Math.round(diff) + '. Fairlife protein shakes (42g) on Amazon — excluded from grocery budget.';
+    } else {
+      note.className = 'warn-box small mt8';
+      note.textContent = 'Over grocery cap by ~$' + Math.round(-diff) + '. Consider reducing spend or raising the $350 cap in the Customize tab.';
+    }
+  }
+}
 
 const VARIABLE_CATS = [
   { id: 'groceries', name: 'Groceries', cap: 350, card: 'Citi Strata Premier', rate: '3x TYP', warning: 'Avg was $443. One planned weekly shop. Longevity Mix (~$98/mo) replacing prior Safeway supplement spend — update cap once you know your typical supplement amount.' },
@@ -1539,6 +1666,7 @@ try { renderMonthBody(); } catch(e) { console.error('renderMonthBody:', e); }
 try { renderCardTable(); } catch(e) { console.error('renderCardTable:', e); }
 try { renderChecks(); } catch(e) { console.error('renderChecks:', e); }
 try { renderCustomize(); } catch(e) { console.error('renderCustomize:', e); }
+try { renderAllGroceryTables(); } catch(e) { console.error('renderAllGroceryTables:', e); }
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js').catch(() => {});
