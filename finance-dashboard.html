@@ -316,31 +316,35 @@
       <div class="timeline">
         <div class="tl-row">
           <div class="tl-dot red"></div>
-          <div><div class="tl-month">Jun 2026</div><div>Bilt: $6,403 → $5,766 · CC payoff · personal debt $500 · Amazon +$136 (paid Jun 15)</div></div>
+          <div><div class="tl-month">Jun 2026</div><div>Bilt: $6,403 → $5,886 · CC payoff · personal debt $500 · Amazon +$136 (paid Jun 15)</div></div>
         </div>
         <div class="tl-row">
           <div class="tl-dot yellow"></div>
-          <div><div class="tl-month">Jul 2026</div><div>Bilt: $5,766 → $4,623 · Personal debt cleared ✓ · Amazon +$136 (paid Jul 15)</div></div>
+          <div><div class="tl-month">Jul 2026</div><div>Bilt: $5,886 → $4,864 · Personal debt cleared ✓ · Amazon +$136 (paid Jul 15)</div></div>
         </div>
         <div class="tl-row">
           <div class="tl-dot yellow"></div>
-          <div><div class="tl-month">Aug 2026</div><div>Bilt: $4,623 → $3,093 · Last Amazon +$136 posts Aug 13, paid Aug 15 · Remitly resumes</div></div>
+          <div><div class="tl-month">Aug 2026</div><div>Bilt: $4,864 → $3,456 · Last Amazon +$136 posts Aug 13, paid Aug 15 · Remitly resumes</div></div>
         </div>
         <div class="tl-row">
           <div class="tl-dot yellow"></div>
-          <div><div class="tl-month">Sep 2026</div><div>Bilt: $3,093 → $1,413 · $1,706 payment</div></div>
+          <div><div class="tl-month">Sep 2026</div><div>Bilt: $3,456 → $1,899 · $1,586 payment</div></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-dot yellow"></div>
+          <div><div class="tl-month">Oct 2026</div><div>Bilt: $1,899 → $411 · $1,586 payment · almost there</div></div>
         </div>
         <div class="tl-row">
           <div class="tl-dot green"></div>
-          <div><div class="tl-month">Oct 2026</div><div class="green bold">Bilt $0 ✓ · $199 seeds emergency fund · fee reserve starts</div></div>
+          <div><div class="tl-month">Nov 2026</div><div class="green bold">Bilt $0 ✓ · $1,090 seeds emergency fund · fee reserve starts</div></div>
         </div>
         <div class="tl-row">
           <div class="tl-dot blue"></div>
-          <div><div class="tl-month">Nov–Dec</div><div>Emergency fund: $199 → $3,447</div></div>
+          <div><div class="tl-month">Dec 2026</div><div>Emergency fund: $1,090 → $2,594</div></div>
         </div>
         <div class="tl-row">
           <div class="tl-dot green"></div>
-          <div><div class="tl-month">Jan 2027</div><div class="green bold">Emergency fund $5,000 ✓ · Roth IRA starts Feb 2027</div></div>
+          <div><div class="tl-month">~Mar 2027</div><div class="green bold">Emergency fund $5,000 ✓ · Roth IRA starts Apr 2027</div></div>
         </div>
       </div>
     </div>
@@ -845,6 +849,7 @@ const MONTHS = [
       { name: 'Affirm Plan A', amount: 184, card: 'Affirm' },
       { name: 'Affirm Plan B', amount: 198, card: 'Affirm' },
       { name: 'Internet (Comcast)', amount: 41, card: 'Ink Preferred' },
+      { name: 'Verizon (phone)', amount: 120, card: 'Ink Preferred' },
       { name: 'PG&E electricity', amount: 28, card: 'Auto-pay' },
       { name: 'GEICO auto insurance', amount: 161, card: 'Blue Biz Plus' },
       { name: 'Equinox', amount: 237, card: 'Blue Biz Plus' },
@@ -853,8 +858,8 @@ const MONTHS = [
       { name: 'Apple subscriptions', amount: 31, card: 'Apple Card' },
     ],
     extras: [{ label: 'Other CC payoff', amount: 500 }, { label: 'Personal debt (1 of 2)', amount: 500 }],
-    biltTarget: 828, biltAfter: 5766,
-    note: '⚠️ $500 CC payoff + $500 of $1k personal debt (due Aug 1). Amazon installment (+$136) charged to Bilt before Aug 15 payment. Bilt gets $828; ~$55 interest.',
+    biltTarget: 708, biltAfter: 5886,
+    note: '⚠️ $500 CC payoff + $500 of $1k personal debt (due Aug 1). Amazon installment (+$136) charged to Bilt before Jun 15 payment. Bilt gets $708; ~$55 interest.',
   },
   {
     id: 'july', label: 'July 2026',
@@ -866,6 +871,7 @@ const MONTHS = [
       { name: 'Affirm Plan A', amount: 184, card: 'Affirm' },
       { name: 'Affirm Plan B (LAST)', amount: 198, card: 'Affirm' },
       { name: 'Internet (Comcast)', amount: 41, card: 'Ink Preferred' },
+      { name: 'Verizon (phone)', amount: 120, card: 'Ink Preferred' },
       { name: 'PG&E electricity', amount: 28, card: 'Auto-pay' },
       { name: 'GEICO auto insurance', amount: 161, card: 'Blue Biz Plus' },
       { name: 'Equinox', amount: 237, card: 'Blue Biz Plus' },
@@ -874,8 +880,8 @@ const MONTHS = [
       { name: 'Apple subscriptions', amount: 31, card: 'Apple Card' },
     ],
     extras: [{ label: 'Personal debt final (2 of 2)', amount: 500 }],
-    biltTarget: 1328, biltAfter: 4623,
-    note: 'Final $500 personal debt — cleared before Aug 1 ✓. Amazon installment (+$136) charged to Bilt before Jul 15 payment. Bilt gets $1,328; ~$49 interest.',
+    biltTarget: 1208, biltAfter: 4864,
+    note: 'Final $500 personal debt — cleared before Aug 1 ✓. Amazon installment (+$136) charged to Bilt before Jul 15 payment. Bilt gets $1,208; ~$50 interest.',
   },
   {
     id: 'august', label: 'August 2026',
@@ -886,6 +892,7 @@ const MONTHS = [
       { name: 'Student loans', amount: 250, card: 'Auto-pay' },
       { name: 'Affirm Plan A', amount: 184, card: 'Affirm' },
       { name: 'Internet (Comcast)', amount: 41, card: 'Ink Preferred' },
+      { name: 'Verizon (phone)', amount: 120, card: 'Ink Preferred' },
       { name: 'PG&E electricity', amount: 28, card: 'Auto-pay' },
       { name: 'GEICO auto insurance', amount: 161, card: 'Blue Biz Plus' },
       { name: 'Equinox', amount: 237, card: 'Blue Biz Plus' },
@@ -895,8 +902,8 @@ const MONTHS = [
       { name: 'Remitly (family support)', amount: 320, card: 'Chase checking' },
     ],
     extras: [],
-    biltTarget: 1706, biltAfter: 3093,
-    note: 'All debts cleared ✓. Last Amazon installment (+$136, posts Aug 13 → paid Aug 15). Full $1,706 to Bilt. Plan B ended, Remitly resumes. ~$40 interest.',
+    biltTarget: 1586, biltAfter: 3456,
+    note: 'All debts cleared ✓. Last Amazon installment (+$136, posts Aug 13 → paid Aug 15). $1,586 to Bilt. Plan B ended, Remitly resumes. ~$42 interest.',
   },
   {
     id: 'september', label: 'September 2026',
@@ -907,6 +914,7 @@ const MONTHS = [
       { name: 'Student loans', amount: 250, card: 'Auto-pay' },
       { name: 'Affirm Plan A', amount: 184, card: 'Affirm' },
       { name: 'Internet (Comcast)', amount: 41, card: 'Ink Preferred' },
+      { name: 'Verizon (phone)', amount: 120, card: 'Ink Preferred' },
       { name: 'PG&E electricity', amount: 28, card: 'Auto-pay' },
       { name: 'GEICO auto insurance', amount: 161, card: 'Blue Biz Plus' },
       { name: 'Equinox', amount: 237, card: 'Blue Biz Plus' },
@@ -916,8 +924,8 @@ const MONTHS = [
       { name: 'Remitly (family support)', amount: 320, card: 'Chase checking' },
     ],
     extras: [],
-    biltTarget: 1706, biltAfter: 1413,
-    note: '$1,706 to Bilt. ~$26 interest. $1,413 remains — final payment next month.',
+    biltTarget: 1586, biltAfter: 1899,
+    note: '$1,586 to Bilt. ~$29 interest. $1,899 remains.',
   },
   {
     id: 'october', label: 'October 2026',
@@ -928,6 +936,29 @@ const MONTHS = [
       { name: 'Student loans', amount: 250, card: 'Auto-pay' },
       { name: 'Affirm Plan A', amount: 184, card: 'Affirm' },
       { name: 'Internet (Comcast)', amount: 41, card: 'Ink Preferred' },
+      { name: 'Verizon (phone)', amount: 120, card: 'Ink Preferred' },
+      { name: 'PG&E electricity', amount: 28, card: 'Auto-pay' },
+      { name: 'GEICO auto insurance', amount: 161, card: 'Blue Biz Plus' },
+      { name: 'Equinox', amount: 237, card: 'Blue Biz Plus' },
+      { name: 'Amazon Prime', amount: 16, card: 'Amazon Prime Visa' },
+      { name: 'Longevity Mix (new)', amount: 98, card: 'Amazon Prime Visa' },
+      { name: 'Apple subscriptions', amount: 31, card: 'Apple Card' },
+      { name: 'Remitly (family support)', amount: 320, card: 'Chase checking' },
+    ],
+    extras: [],
+    biltTarget: 1586, biltAfter: 411,
+    note: '$1,586 to Bilt. ~$16 interest. $411 remains — final payment next month.',
+  },
+  {
+    id: 'november', label: 'November 2026',
+    phase: 'bilt',
+    fixed: [
+      { name: 'Rent (Bilt Housing ACH)', amount: 3347, card: 'Bilt' },
+      { name: 'Capital One auto loan', amount: 446, card: 'Auto-pay' },
+      { name: 'Student loans', amount: 250, card: 'Auto-pay' },
+      { name: 'Affirm Plan A', amount: 184, card: 'Affirm' },
+      { name: 'Internet (Comcast)', amount: 41, card: 'Ink Preferred' },
+      { name: 'Verizon (phone)', amount: 120, card: 'Ink Preferred' },
       { name: 'PG&E electricity', amount: 28, card: 'Auto-pay' },
       { name: 'GEICO auto insurance', amount: 161, card: 'Blue Biz Plus' },
       { name: 'Equinox', amount: 237, card: 'Blue Biz Plus' },
@@ -937,30 +968,9 @@ const MONTHS = [
       { name: 'Remitly (family support)', amount: 320, card: 'Chase checking' },
     ],
     extras: [{ label: 'Bilt fee reserve (set aside)', amount: 82 }],
-    biltTarget: 1425, biltAfter: 0,
-    emergencyTarget: 199, emergencyAfter: 199,
-    note: '🎉 Bilt paid off! ~$12 final interest. $199 surplus seeds emergency fund. Start $82/month Bilt fee reserve.',
-  },
-  {
-    id: 'november', label: 'November 2026',
-    phase: 'emergency',
-    fixed: [
-      { name: 'Rent (Bilt Housing ACH)', amount: 3347, card: 'Bilt' },
-      { name: 'Capital One auto loan', amount: 446, card: 'Auto-pay' },
-      { name: 'Student loans', amount: 250, card: 'Auto-pay' },
-      { name: 'Affirm Plan A', amount: 184, card: 'Affirm' },
-      { name: 'Internet (Comcast)', amount: 41, card: 'Ink Preferred' },
-      { name: 'PG&E electricity', amount: 28, card: 'Auto-pay' },
-      { name: 'GEICO auto insurance', amount: 161, card: 'Blue Biz Plus' },
-      { name: 'Equinox', amount: 237, card: 'Blue Biz Plus' },
-      { name: 'Amazon Prime', amount: 16, card: 'Amazon Prime Visa' },
-      { name: 'Longevity Mix (new)', amount: 98, card: 'Amazon Prime Visa' },
-      { name: 'Apple subscriptions', amount: 31, card: 'Apple Card' },
-      { name: 'Remitly (family support)', amount: 320, card: 'Chase checking' },
-    ],
-    extras: [{ label: 'Bilt fee reserve', amount: 82 }],
-    emergencyTarget: 1624, emergencyAfter: 1823,
-    note: 'Emergency fund growing. $1,823 saved — $3,177 to go.',
+    biltTarget: 414, biltAfter: 0,
+    emergencyTarget: 1090, emergencyAfter: 1090,
+    note: '🎉 Bilt paid off! ~$3 final interest. $1,090 surplus seeds emergency fund. Start $82/month Bilt fee reserve.',
   },
   {
     id: 'december', label: 'December 2026',
@@ -971,6 +981,7 @@ const MONTHS = [
       { name: 'Student loans', amount: 250, card: 'Auto-pay' },
       { name: 'Affirm Plan A', amount: 184, card: 'Affirm' },
       { name: 'Internet (Comcast)', amount: 41, card: 'Ink Preferred' },
+      { name: 'Verizon (phone)', amount: 120, card: 'Ink Preferred' },
       { name: 'PG&E electricity', amount: 28, card: 'Auto-pay' },
       { name: 'GEICO auto insurance', amount: 161, card: 'Blue Biz Plus' },
       { name: 'Equinox', amount: 237, card: 'Blue Biz Plus' },
@@ -980,8 +991,8 @@ const MONTHS = [
       { name: 'Remitly (family support)', amount: 320, card: 'Chase checking' },
     ],
     extras: [{ label: 'Bilt fee reserve', amount: 82 }],
-    emergencyTarget: 1624, emergencyAfter: 3447,
-    note: 'Emergency fund: $3,447. $1,553 to go — hits $5,000 in January 2027. Roth IRA starts February 2027.',
+    emergencyTarget: 1504, emergencyAfter: 2594,
+    note: 'Emergency fund: $2,594. $2,406 to go. ~March 2027 hits $5,000. Roth IRA starts April 2027.',
   },
 ];
 
@@ -1406,8 +1417,8 @@ function renderBilt() {
     fill.style.background = pct > 60 ? 'var(--green)' : pct > 30 ? 'var(--yellow)' : 'var(--red)';
     pctLabel.textContent = pct.toFixed(0) + '% paid (' + '$' + paid.toFixed(0) + ')';
     remLabel.textContent = '$' + val.toFixed(0) + ' remaining';
-    const monthsLeft = val <= 1425 ? '~1 month' : val <= 3093 ? '~2 months' : val <= 4623 ? '~3 months' : val <= 5766 ? '~4 months' : '~5 months';
-    status.textContent = '$' + val.toFixed(0) + ' remaining — payoff target: October 2026 (' + monthsLeft + ')';
+    const monthsLeft = val <= 414 ? '~1 month' : val <= 1899 ? '~2 months' : val <= 3456 ? '~3 months' : val <= 4864 ? '~4 months' : '~5 months';
+    status.textContent = '$' + val.toFixed(0) + ' remaining — payoff target: November 2026 (' + monthsLeft + ')';
   }
 }
 
