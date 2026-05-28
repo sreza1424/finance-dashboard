@@ -271,7 +271,7 @@
     <div class="card-title">Bilt Balance — Update Today's Balance</div>
     <div class="inline-flex">
       <span style="font-size:20px;font-weight:700;color:var(--muted)">$</span>
-      <input class="big-input" id="bilt-input" type="number" min="0" max="9999" step="1" placeholder="5154" oninput="saveBilt()">
+      <input class="big-input" id="bilt-input" type="number" min="0" max="9999" step="1" placeholder="6403" oninput="saveBilt()">
       <button class="btn" onclick="document.getElementById('bilt-input').value='';saveBilt()">Clear</button>
     </div>
     <div id="bilt-progress-wrap" class="progress-wrap mt8" style="display:none">
@@ -316,31 +316,35 @@
       <div class="timeline">
         <div class="tl-row">
           <div class="tl-dot red"></div>
-          <div><div class="tl-month">Jun 2026</div><div>Bilt: $5,154 → $4,426 · Dental · debt $657 · 10% APR</div></div>
+          <div><div class="tl-month">Jun 2026</div><div>Bilt: $6,403 → $6,166 · Dental · CC payoff · personal debt $500 · Amazon +$136</div></div>
         </div>
         <div class="tl-row">
           <div class="tl-dot yellow"></div>
-          <div><div class="tl-month">Jul 2026</div><div>Bilt: $4,426 → $3,491 · Last Affirm B · debt final $656 ✓</div></div>
+          <div><div class="tl-month">Jul 2026</div><div>Bilt: $6,166 → $5,227 · Dental final · personal debt cleared ✓ · Amazon +$136</div></div>
         </div>
         <div class="tl-row">
           <div class="tl-dot yellow"></div>
-          <div><div class="tl-month">Aug 2026</div><div>Bilt: $3,491 → $1,814 · Full $1,706 to Bilt · Remitly resumes</div></div>
+          <div><div class="tl-month">Aug 2026</div><div>Bilt: $5,227 → $3,702 · Last Amazon installment · Remitly resumes · Full $1,706</div></div>
         </div>
         <div class="tl-row">
           <div class="tl-dot yellow"></div>
-          <div><div class="tl-month">Sep 2026</div><div>Bilt: $1,814 → $123 · $123 remains</div></div>
+          <div><div class="tl-month">Sep 2026</div><div>Bilt: $3,702 → $2,027 · $1,706 payment</div></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-dot yellow"></div>
+          <div><div class="tl-month">Oct 2026</div><div>Bilt: $2,027 → $338 · $1,706 payment · almost there</div></div>
         </div>
         <div class="tl-row">
           <div class="tl-dot green"></div>
-          <div><div class="tl-month">Oct 2026</div><div class="green bold">Bilt $0 ✓ · $1,582 seeds emergency fund</div></div>
+          <div><div class="tl-month">Nov 2026</div><div class="green bold">Bilt $0 ✓ · $1,283 seeds emergency fund</div></div>
         </div>
         <div class="tl-row">
           <div class="tl-dot blue"></div>
-          <div><div class="tl-month">Nov–Dec</div><div>Emergency fund: $1,582 → $4,830</div></div>
+          <div><div class="tl-month">Dec 2026</div><div>Emergency fund: $1,283 → $2,907 · $2,093 to go</div></div>
         </div>
         <div class="tl-row">
           <div class="tl-dot green"></div>
-          <div><div class="tl-month">Jan 2027</div><div class="green bold">Emergency fund $5,000 ✓ · Roth IRA starts</div></div>
+          <div><div class="tl-month">~Apr 2027</div><div class="green bold">Emergency fund $5,000 ✓ · Roth IRA starts</div></div>
         </div>
       </div>
     </div>
@@ -627,18 +631,18 @@
   </div>
 
   <div class="card">
-    <div class="card-title">Bilt Annual Fee Reserve — $82/month starting October</div>
+    <div class="card-title">Bilt Annual Fee Reserve — $82/month starting November</div>
     <div class="info-box small">
-      Bilt's $495 annual fee posts <strong>March 4, 2027</strong>. Set aside $82/month from October 2026 → February 2027 (5 months) so you have $410–492 ready. Pay from checking surplus — do not charge it to the Bilt card.
+      Bilt's $495 annual fee posts <strong>March 4, 2027</strong>. Set aside $82/month from November 2026 → March 2027 (5 months) so you have $410 ready. Pay from checking surplus — do not charge it to the Bilt card.
     </div>
     <table>
       <thead><tr><th>Month</th><th>Set Aside</th><th>Running Total</th></tr></thead>
       <tbody>
-        <tr><td>October 2026</td><td>$82</td><td>$82</td></tr>
-        <tr><td>November 2026</td><td>$82</td><td>$164</td></tr>
-        <tr><td>December 2026</td><td>$82</td><td>$246</td></tr>
-        <tr><td>January 2027</td><td>$82</td><td>$328</td></tr>
-        <tr><td>February 2027</td><td>$82</td><td>$410</td></tr>
+        <tr><td>November 2026</td><td>$82</td><td>$82</td></tr>
+        <tr><td>December 2026</td><td>$82</td><td>$164</td></tr>
+        <tr><td>January 2027</td><td>$82</td><td>$246</td></tr>
+        <tr><td>February 2027</td><td>$82</td><td>$328</td></tr>
+        <tr><td>March 2027</td><td>$82</td><td>$410</td></tr>
         <tr><td>March 4, 2027</td><td colspan="2" class="green bold">Bilt fee posts — pay $495 from reserve + $85 surplus</td></tr>
       </tbody>
     </table>
@@ -852,9 +856,9 @@ const MONTHS = [
       { name: 'Longevity Mix (new)', amount: 98, card: 'Amazon Prime Visa' },
       { name: 'Apple subscriptions', amount: 31, card: 'Apple Card' },
     ],
-    extras: [{ label: 'Dental (~2 visits)', amount: 400 }, { label: 'Other debt payoff (1 of 2)', amount: 657 }],
-    biltTarget: 771, biltAfter: 4426,
-    note: '⚠️ Prioritizing $1,313.16 debt due Aug 1 — $657 this month, $656 in July. Bilt gets $771 this month. 10% APR adds ~$43 interest.',
+    extras: [{ label: 'Dental (~2 visits)', amount: 400 }, { label: 'Other CC payoff', amount: 500 }, { label: 'Personal debt (1 of 2)', amount: 500 }],
+    biltTarget: 428, biltAfter: 6166,
+    note: '⚠️ $400 dental + $500 CC payoff + $500 of $1k personal debt (due Aug 1). Amazon installment adds $136 to Bilt this month. Bilt gets $428; ~$54 interest.',
   },
   {
     id: 'july', label: 'July 2026',
@@ -873,9 +877,9 @@ const MONTHS = [
       { name: 'Longevity Mix (new)', amount: 98, card: 'Amazon Prime Visa' },
       { name: 'Apple subscriptions', amount: 31, card: 'Apple Card' },
     ],
-    extras: [{ label: 'Dental (final visit)', amount: 200 }, { label: 'Other debt payoff (2 of 2 — FINAL)', amount: 656 }],
-    biltTarget: 972, biltAfter: 3491,
-    note: 'Last Affirm Plan B + final debt payment of $656 — debt fully cleared ✓. Bilt gets $972. APR adds ~$37 interest.',
+    extras: [{ label: 'Dental (final visit)', amount: 200 }, { label: 'Personal debt final (2 of 2)', amount: 500 }],
+    biltTarget: 1128, biltAfter: 5227,
+    note: 'Final $500 personal debt — cleared before Aug 1 ✓. $200 dental. Amazon installment adds $136 to Bilt. Bilt gets $1,128; ~$52 interest.',
   },
   {
     id: 'august', label: 'August 2026',
@@ -895,8 +899,8 @@ const MONTHS = [
       { name: 'Remitly (family support)', amount: 320, card: 'Chase checking' },
     ],
     extras: [],
-    biltTarget: 1706, biltAfter: 1814,
-    note: 'Debt cleared ✓. Full $1,706 back to Bilt. Plan B ended, Remitly resumes. ~$29 interest. $1,814 remains — clears in October.',
+    biltTarget: 1706, biltAfter: 3702,
+    note: 'All debts cleared ✓. Last Amazon installment (+$136 to Bilt). Full $1,706 to Bilt. Plan B ended, Remitly resumes. ~$45 interest.',
   },
   {
     id: 'september', label: 'September 2026',
@@ -916,8 +920,8 @@ const MONTHS = [
       { name: 'Remitly (family support)', amount: 320, card: 'Chase checking' },
     ],
     extras: [],
-    biltTarget: 1706, biltAfter: 123,
-    note: '$1,706 to Bilt. ~$15 interest. $123 remains — final payment next month.',
+    biltTarget: 1706, biltAfter: 2027,
+    note: '$1,706 to Bilt. ~$31 interest. $2,027 remains.',
   },
   {
     id: 'october', label: 'October 2026',
@@ -936,14 +940,13 @@ const MONTHS = [
       { name: 'Apple subscriptions', amount: 31, card: 'Apple Card' },
       { name: 'Remitly (family support)', amount: 320, card: 'Chase checking' },
     ],
-    extras: [{ label: 'Bilt fee reserve (set aside)', amount: 82 }],
-    biltTarget: 124, biltAfter: 0,
-    emergencyTarget: 1582, emergencyAfter: 1582,
-    note: '🎉 Bilt paid off! ~$1 final interest. $1,582 surplus seeds emergency fund. Start $82/month Bilt fee reserve.',
+    extras: [],
+    biltTarget: 1706, biltAfter: 338,
+    note: '$1,706 to Bilt. ~$17 interest. $338 remains — almost there!',
   },
   {
     id: 'november', label: 'November 2026',
-    phase: 'emergency',
+    phase: 'bilt',
     fixed: [
       { name: 'Rent (Bilt Housing ACH)', amount: 3347, card: 'Bilt' },
       { name: 'Capital One auto loan', amount: 446, card: 'Auto-pay' },
@@ -958,9 +961,10 @@ const MONTHS = [
       { name: 'Apple subscriptions', amount: 31, card: 'Apple Card' },
       { name: 'Remitly (family support)', amount: 320, card: 'Chase checking' },
     ],
-    extras: [{ label: 'Bilt fee reserve', amount: 82 }],
-    emergencyTarget: 1624, emergencyAfter: 3206,
-    note: 'Emergency fund growing. $1,794 short of $5,000 goal.',
+    extras: [{ label: 'Bilt fee reserve (set aside)', amount: 82 }],
+    biltTarget: 341, biltAfter: 0,
+    emergencyTarget: 1283, emergencyAfter: 1283,
+    note: '🎉 Bilt paid off! ~$3 final interest. $1,283 surplus seeds emergency fund. Start $82/month Bilt fee reserve.',
   },
   {
     id: 'december', label: 'December 2026',
@@ -980,8 +984,8 @@ const MONTHS = [
       { name: 'Remitly (family support)', amount: 320, card: 'Chase checking' },
     ],
     extras: [{ label: 'Bilt fee reserve', amount: 82 }],
-    emergencyTarget: 1624, emergencyAfter: 4830,
-    note: 'Emergency fund: $4,830 — $170 from $5,000 goal. Roth IRA starts January 2027.',
+    emergencyTarget: 1624, emergencyAfter: 2907,
+    note: 'Emergency fund: $2,907. $2,093 remaining to $5,000 goal. Continue $82/month Bilt fee reserve. Roth IRA starts after emergency fund is complete.',
   },
 ];
 
@@ -1225,7 +1229,7 @@ const CHECKS = {
   ],
   soon: [
     { id: 'venture-x', text: 'Decide on Venture X before the next annual fee posts ($395). Keep if you use the $300 Capital One Travel credit — it\'s fee-positive.', tag: 'Before fee' },
-    { id: 'bilt-reserve', text: 'Starting October 2026, set aside $82/month for Bilt\'s $495 March 2027 annual fee. Transfer to a separate savings account.', tag: 'Oct 2026' },
+    { id: 'bilt-reserve', text: 'Starting November 2026 (after Bilt payoff), set aside $82/month for Bilt\'s $495 March 2027 annual fee. Transfer to a separate savings account.', tag: 'Nov 2026' },
     { id: 'bofa-category', text: 'Log into BofA app → Rewards → set your 3% category to "Online Shopping" for BofA Cash Rewards card.', tag: 'Soon' },
   ],
   monthly: [
@@ -1319,7 +1323,7 @@ function resetFixedToggles() {
 
 function computePaydown() {
   const BILT_APR = 0.10;
-  let biltBal = parseFloat(localStorage.getItem('bilt-balance') || '5154');
+  let biltBal = parseFloat(localStorage.getItem('bilt-balance') || '6403');
   let emBal = 0;
   const out = {};
   MONTHS.forEach(m => {
@@ -1387,7 +1391,7 @@ function renderBilt() {
   const pctLabel = document.getElementById('bilt-pct-label');
   const remLabel = document.getElementById('bilt-remaining-label');
   const status = document.getElementById('bilt-status');
-  const START = 5154;
+  const START = 6403;
 
   if (!inp.value && !stored) { wrap.style.display = 'none'; status.textContent = 'Enter your current Bilt balance above.'; return; }
 
@@ -1406,8 +1410,8 @@ function renderBilt() {
     fill.style.background = pct > 60 ? 'var(--green)' : pct > 30 ? 'var(--yellow)' : 'var(--red)';
     pctLabel.textContent = pct.toFixed(0) + '% paid (' + '$' + paid.toFixed(0) + ')';
     remLabel.textContent = '$' + val.toFixed(0) + ' remaining';
-    const monthsLeft = val <= 1620 ? (val <= 1818 ? '~1 month' : '~2 months') : '~3 months';
-    status.textContent = '$' + val.toFixed(0) + ' remaining — payoff target: August 2026 (' + monthsLeft + ')';
+    const monthsLeft = val <= 341 ? '~1 month' : val <= 2027 ? '~2 months' : val <= 3702 ? '~3 months' : val <= 5227 ? '~4 months' : '~5 months';
+    status.textContent = '$' + val.toFixed(0) + ' remaining — payoff target: November 2026 (' + monthsLeft + ')';
   }
 }
 
