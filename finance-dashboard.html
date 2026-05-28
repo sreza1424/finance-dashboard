@@ -303,11 +303,12 @@
     <div class="card">
       <div class="card-title">Paydown Surplus</div>
       <div class="stat-val blue">$1,706</div>
-      <div class="stat-label">Available for Bilt / savings each month (from Aug)</div>
+      <div class="stat-label">Available for debt/savings each month (from Aug)</div>
       <div class="stat-sub mt8" style="line-height:1.6">
-        Jun: <span class="green bold">$1,428</span> → Bilt<br>
-        Jul: <span class="green bold">$1,628</span> → Bilt<br>
-        Aug–Sep: <span class="green bold">$1,706 + $226</span> → Bilt (<span class="green">PAID OFF</span>)
+        Jun: <span class="yellow bold">$771</span> → Bilt + <span class="red bold">$657</span> → other debt<br>
+        Jul: <span class="yellow bold">$972</span> → Bilt + <span class="red bold">$656</span> → other debt (cleared ✓)<br>
+        Aug–Sep: <span class="green bold">$1,706</span> → Bilt each month<br>
+        Oct: <span class="green bold">Bilt $0 ✓</span> · $1,582 seeds emergency fund
       </div>
     </div>
     <div class="card">
@@ -315,27 +316,31 @@
       <div class="timeline">
         <div class="tl-row">
           <div class="tl-dot red"></div>
-          <div><div class="tl-month">Jun 2026</div><div>Bilt: $5,154 → $3,769 · Dental · 10% APR</div></div>
+          <div><div class="tl-month">Jun 2026</div><div>Bilt: $5,154 → $4,426 · Dental · debt $657 · 10% APR</div></div>
         </div>
         <div class="tl-row">
           <div class="tl-dot yellow"></div>
-          <div><div class="tl-month">Jul 2026</div><div>Bilt: $3,769 → $2,172 · Last Affirm B</div></div>
+          <div><div class="tl-month">Jul 2026</div><div>Bilt: $4,426 → $3,491 · Last Affirm B · debt final $656 ✓</div></div>
         </div>
         <div class="tl-row">
           <div class="tl-dot yellow"></div>
-          <div><div class="tl-month">Aug 2026</div><div>Bilt: $2,172 → $484 · Plan B ends, Remitly starts</div></div>
+          <div><div class="tl-month">Aug 2026</div><div>Bilt: $3,491 → $1,814 · Full $1,706 to Bilt · Remitly resumes</div></div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-dot yellow"></div>
+          <div><div class="tl-month">Sep 2026</div><div>Bilt: $1,814 → $123 · $123 remains</div></div>
         </div>
         <div class="tl-row">
           <div class="tl-dot green"></div>
-          <div><div class="tl-month">Sep 2026</div><div class="green bold">Bilt $0 ✓ · $1,218 seeds emergency fund</div></div>
+          <div><div class="tl-month">Oct 2026</div><div class="green bold">Bilt $0 ✓ · $1,582 seeds emergency fund</div></div>
         </div>
         <div class="tl-row">
           <div class="tl-dot blue"></div>
-          <div><div class="tl-month">Oct–Nov</div><div>Emergency fund: $2,842 → $4,548</div></div>
+          <div><div class="tl-month">Nov–Dec</div><div>Emergency fund: $1,582 → $4,830</div></div>
         </div>
         <div class="tl-row">
           <div class="tl-dot green"></div>
-          <div><div class="tl-month">Dec 2026</div><div class="green bold">Emergency fund $5,000 ✓ · Roth IRA starts ($1,254)</div></div>
+          <div><div class="tl-month">Jan 2027</div><div class="green bold">Emergency fund $5,000 ✓ · Roth IRA starts</div></div>
         </div>
       </div>
     </div>
@@ -847,9 +852,9 @@ const MONTHS = [
       { name: 'Longevity Mix (new)', amount: 98, card: 'Amazon Prime Visa' },
       { name: 'Apple subscriptions', amount: 31, card: 'Apple Card' },
     ],
-    extras: [{ label: 'Dental (~2 visits)', amount: 400 }],
-    biltTarget: 1428, biltAfter: 3769,
-    note: '⚠️ San Diego trip — apply any underspend directly to Bilt. 10% intro APR adds ~$41 interest this month.',
+    extras: [{ label: 'Dental (~2 visits)', amount: 400 }, { label: 'Other debt payoff (1 of 2)', amount: 657 }],
+    biltTarget: 771, biltAfter: 4426,
+    note: '⚠️ Prioritizing $1,313.16 debt due Aug 1 — $657 this month, $656 in July. Bilt gets $771 this month. 10% APR adds ~$43 interest.',
   },
   {
     id: 'july', label: 'July 2026',
@@ -868,9 +873,9 @@ const MONTHS = [
       { name: 'Longevity Mix (new)', amount: 98, card: 'Amazon Prime Visa' },
       { name: 'Apple subscriptions', amount: 31, card: 'Apple Card' },
     ],
-    extras: [{ label: 'Dental (final visit)', amount: 200 }],
-    biltTarget: 1628, biltAfter: 2172,
-    note: 'Last Affirm Plan B payment — $198/month freed starting August. 10% intro APR adds ~$29 interest this month.',
+    extras: [{ label: 'Dental (final visit)', amount: 200 }, { label: 'Other debt payoff (2 of 2 — FINAL)', amount: 656 }],
+    biltTarget: 972, biltAfter: 3491,
+    note: 'Last Affirm Plan B + final debt payment of $656 — debt fully cleared ✓. Bilt gets $972. APR adds ~$37 interest.',
   },
   {
     id: 'august', label: 'August 2026',
@@ -890,8 +895,8 @@ const MONTHS = [
       { name: 'Remitly (family support)', amount: 320, card: 'Chase checking' },
     ],
     extras: [],
-    biltTarget: 1706, biltAfter: 484,
-    note: 'Plan B ends, Remitly resumes. 10% fixed APR (confirmed — entire balance is new card purchases, zero at 34.74%). ~$18 interest. $484 remains — clears in September.',
+    biltTarget: 1706, biltAfter: 1814,
+    note: 'Debt cleared ✓. Full $1,706 back to Bilt. Plan B ended, Remitly resumes. ~$29 interest. $1,814 remains — clears in October.',
   },
   {
     id: 'september', label: 'September 2026',
@@ -911,12 +916,12 @@ const MONTHS = [
       { name: 'Remitly (family support)', amount: 320, card: 'Chase checking' },
     ],
     extras: [],
-    biltTarget: 488, biltAfter: 0,
-    note: '🎉 Bilt paid off! ~$4 final interest. Remaining $1,218 surplus immediately seeds emergency fund.',
+    biltTarget: 1706, biltAfter: 123,
+    note: '$1,706 to Bilt. ~$15 interest. $123 remains — final payment next month.',
   },
   {
     id: 'october', label: 'October 2026',
-    phase: 'emergency',
+    phase: 'bilt',
     fixed: [
       { name: 'Rent (Bilt Housing ACH)', amount: 3347, card: 'Bilt' },
       { name: 'Capital One auto loan', amount: 446, card: 'Auto-pay' },
@@ -932,8 +937,9 @@ const MONTHS = [
       { name: 'Remitly (family support)', amount: 320, card: 'Chase checking' },
     ],
     extras: [{ label: 'Bilt fee reserve (set aside)', amount: 82 }],
-    emergencyTarget: 1624, emergencyAfter: 2842,
-    note: 'Start setting aside $82/month for Bilt March 2027 fee. Emergency fund: $2,842 (includes $1,218 seeded from September).',
+    biltTarget: 124, biltAfter: 0,
+    emergencyTarget: 1582, emergencyAfter: 1582,
+    note: '🎉 Bilt paid off! ~$1 final interest. $1,582 surplus seeds emergency fund. Start $82/month Bilt fee reserve.',
   },
   {
     id: 'november', label: 'November 2026',
@@ -953,8 +959,8 @@ const MONTHS = [
       { name: 'Remitly (family support)', amount: 320, card: 'Chase checking' },
     ],
     extras: [{ label: 'Bilt fee reserve', amount: 82 }],
-    emergencyTarget: 1706, emergencyAfter: 4548,
-    note: 'Emergency fund growing — $272 short of $5,000 goal. One more month.',
+    emergencyTarget: 1624, emergencyAfter: 3206,
+    note: 'Emergency fund growing. $1,794 short of $5,000 goal.',
   },
   {
     id: 'december', label: 'December 2026',
@@ -974,9 +980,8 @@ const MONTHS = [
       { name: 'Remitly (family support)', amount: 320, card: 'Chase checking' },
     ],
     extras: [{ label: 'Bilt fee reserve', amount: 82 }],
-    emergencyTarget: 452, emergencyAfter: 5000,
-    rothStart: 1254,
-    note: '🎉 Emergency fund hits $5,000! Remaining $1,352 starts Roth IRA this month.',
+    emergencyTarget: 1624, emergencyAfter: 4830,
+    note: 'Emergency fund: $4,830 — $170 from $5,000 goal. Roth IRA starts January 2027.',
   },
 ];
 
